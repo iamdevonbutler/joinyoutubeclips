@@ -12,6 +12,17 @@
   text-indent: 0.01px; /* Removes default arrow from firefox*/
 }
 
+@mixin clearfix {
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
 @mixin iconLogo {
 	border-radius: 50%;
 	width: 30px;

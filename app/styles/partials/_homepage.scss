@@ -9,16 +9,26 @@
     > * {
       width: 1000px;
       height: 562px;
+      display: none;
+      &.active {
+        display: block;
+      }
     }
   }
 
   #navWrapper {
+    @include clearfix;
     > li {
-      background-color: rgba(0,0,0,0.10);
+      float: left;
+      margin-left: 10px;
+      background-color: #1a1a1a;
       padding: 5px 8px;
       color: #272626;
-      &:active {
+      &.active {
         color: #9c9c9c;
+      }
+      &:first-child {
+        margin-left: 0;
       }
     }
   }
