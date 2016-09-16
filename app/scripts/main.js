@@ -12,8 +12,8 @@ const utils = require('./utils');
   $(document).ready(function() {
     // const data = utils.getPlayerData(window.location);
     var data = [
-      {vid: 'Qa4uI_50Bmk', segments: [[0, 20], [100, 120]]},
-      {vid: 'glWKKOro8QU', segments: [[0, 20], [100, 120]]},
+      {vid: 'Qa4uI_50Bmk', segments: [[0, 10], [100, 105]]},
+      {vid: 'glWKKOro8QU', segments: [[0, 5], [100, 105]]},
     ];
 
     player.init(data);

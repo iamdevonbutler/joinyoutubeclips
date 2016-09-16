@@ -1,6 +1,6 @@
 const utils = require('./utils');
 
-var $navWrapper, callback;
+var $navWrapper, __callback__;
 
 function cache() {
   $navWrapper = $('#navWrapper');
@@ -34,9 +34,9 @@ function bindEvents() {
     if (!active) {
       changeTab($el);
     }
-    if (callback) {
+    if (__callback__) {
       let id = $el.attr('data-id');
-      callback.call(null, id);
+      __callback__.call(null, id);
     }
   });
 }
@@ -45,17 +45,17 @@ function getTabById(id) {
   return $navWrapper.find(`> [data-id="${id}"]`);
 }
 
-module.exports.init = function(data) {
+module.exports.init = (data) => {
   cache();
   addItems(data);
   bindEvents();
 }
 
-module.exports.onChange = function(_callback) {
-  callback = _callback;
+module.exports.onChange = (callback) => {
+  __callback__ = callback;
 }
 
-module.exports.switch = function(id) {
+module.exports.switch = (id) => {
   var $el = getTabById(id);
   changeTab($el);
 }

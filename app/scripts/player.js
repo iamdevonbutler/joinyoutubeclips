@@ -1,14 +1,14 @@
-const player = require('youtube-player');
+const YT = require('youtube-player');
 const utils = require('./utils');
 
 var $playerWrapper,
-  activeId = '0.0',
-  players = [],
-  data,
-  _callback;
+  __activeId__ = '0.0',
+  __players__ = [],
+  __data__,
+  __callback__;
 
-function cache(_data) {
-  data = _data;
+function cache(data) {
+  __data__ = data;
   $playerWrapper = $('#playerWrapper');
 }
 
@@ -18,11 +18,37 @@ function bindEvents() {
 
 function addItem(id, vid, active = false) {
   var item = `<li data-id="${id}" ${active ? 'class="active"' : ''}><div></div></li>`;
+
+  var segment = utils.getSegmentFromData(__data__, id);
+  var startTime = segment[0];
+  var endTime = segment[1];
+
+  // Add item to DOM.
   $playerWrapper.append(item);
   var el = $playerWrapper.children().last().children()[0];
-  players[id] = player(el, {
+  console.log(startTime, endTime);
+  __players__[id] = YT(el, {
     videoId: vid,
+    playerVars: {
+      autoplay: 0,
+      controls: 0,
+      start: startTime,
+      end: endTime,
+    }
   });
+
+  // Add lisitener - auto switch to next video when over.
+  __players__[id].on('stateChange', (event) => {
+    let ended = event.data === 0;
+    if (ended) {
+      let id = $(event.target.a).parent().attr('data-id');
+      let nextId = utils.getNextIdFromData(__data__, id);
+      if (nextId) {
+        switchVideo(nextId);
+      }
+    }
+  });
+
 }
 
 function addItems(data) {
@@ -40,37 +66,34 @@ function getVideoById(id) {
 }
 
 // @todo hack - this is an async operation and we really should return a promise.
-function changeVideo(id) {
+function changeVideoDisplay(id) {
   var $el = getVideoById(id);
-  console.log($el);
   $playerWrapper.children().removeClass('active');
   $el.addClass('active');
 }
 
-module.exports.init = function(data) {
+
+// @todo hack - async not handled properly.
+function switchVideo(id) {
+  var currentPlayer = __players__[__activeId__];
+  var nextPlayer = __players__[id];
+  __activeId__ = id; // Update activeId in hacky closure state.
+
+  changeVideoDisplay(id);
+  currentPlayer.pauseVideo();
+  nextPlayer.playVideo();
+}
+
+function init(data) {
   cache(data);
   addItems(data);
   // bindEvents();
 }
 
-module.exports.switch = function(id) {
-  var segment = utils.getSegmentFromData(data, id);
-  var startTime = segment[0];
-  var endTime = segment[1];
-  var player = players[id];
-  players[activeId]
-    .pauseVideo()
-    .then(() => {
-      activeId = id; // Update activeId in hacky closure state.
-      player.seekTo(startTime).then(() => {
-        player.playVideo().then(() => {
-          changeVideo(id);
-        });
-      });
+module.exports.init = init;
 
-    });
-}
+module.exports.switch = switchVideo;
 
-module.exports.onChange = function(_callback) {
-  callback = _callback;
+module.exports.onChange = (callback) => {
+  __callback__ = callback;
 }

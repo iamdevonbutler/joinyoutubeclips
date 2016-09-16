@@ -6,18 +6,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    > * {
-      width: 1000px;
-      height: 562px;
-      display: none;
+    > li {
+      // display: none;
       &.active {
         display: block;
+      }
+      // iframe
+      > * {
+        width: 100px;
+        height: 562px;
       }
     }
   }
 
   #navWrapper {
     @include clearfix;
+    margin: 0 auto;
+    max-width: 1000px;
+    width: 100%;
     > li {
       float: left;
       margin-left: 10px;
