@@ -1,0 +1,15 @@
+#homepage {
+
+  #playerWrapper {
+    margin-top: 100px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    > * {
+      width: 1000px;
+      height: 562px;
+    }
+  }
+
+}

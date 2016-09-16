@@ -1,0 +1,42 @@
+@font-face {
+	font-family: "Icons";
+	src: url('../fonts/icons/Icons.eot');
+	src: url('../fonts/icons/Icons.eot?#iefix') format('eot'),
+		url('../fonts/icons/Icons.woff2') format('woff2'),
+		url('../fonts/icons/Icons.woff') format('woff'),
+		url('../fonts/icons/Icons.ttf') format('truetype'),
+		url('../fonts/icons/Icons.svg#Icons') format('svg');
+}
+
+.icon:before {
+	font-family: "Icons";
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	/* speak: none; only necessary if not using the private unicode range (firstGlyph option) */
+	text-decoration: none;
+	text-transform: none;
+}
+
+
+.icon-download:before {
+	content: "\E001";
+}
+
+.icon-handshake:before {
+	content: "\E002";
+}
+
+.icon-heart:before {
+	content: "\E003";
+}
+
+.icon-mic:before {
+	content: "\E004";
+}
+
+.icon-podcast:before {
+	content: "\E005";
+}

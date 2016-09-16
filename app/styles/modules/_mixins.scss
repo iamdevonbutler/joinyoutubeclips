@@ -1,0 +1,21 @@
+@mixin resetInput {
+	margin: 0;
+	border: 0;
+	padding: 0;
+	display: inline-block;
+	vertical-align: middle;
+	white-space: normal;
+	background: none;
+  outline: none;
+  appearance: none;
+  text-overflow: '';
+  text-indent: 0.01px; /* Removes default arrow from firefox*/
+}
+
+@mixin iconLogo {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+  border: 3px solid $pink;
+	display: block;
+}
