@@ -1,4 +1,8 @@
-const scrubber = require('./scrubber');
+/**
+ * @todos
+ * clip selection via url param
+ */
+const nav = require('./nav');
 const player = require('./player');
 const utils = require('./utils');
 
