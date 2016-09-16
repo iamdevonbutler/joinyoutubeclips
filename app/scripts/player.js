@@ -4,6 +4,7 @@ const utils = require('./utils');
 var $playerWrapper,
   __activeId__ = '0.0',
   __players__ = [],
+  __playerTime__ = 0,
   __data__,
   __callback__;
 
@@ -102,12 +103,28 @@ function bufferVideos() {
   });
 }
 
+function initTimeKeeping() {
+  setInterval(() => {
+    let player = __players__[__activeId__];
+    player.getCurrentTime().then((time) => {
+      __playerTime__ = time;
+    });
+  }, 50);
+}
+
+function getPlayerTime() {
+  return __playerTime__;
+}
+
 function init(data) {
   cache(data);
   addPlayers(data);
   bufferVideos();
+  initTimeKeeping();
   // bindEvents();
 }
+
+module.exports.init = init;
 
 module.exports.init = init;
 

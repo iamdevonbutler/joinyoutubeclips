@@ -2,7 +2,7 @@
 
   #playerWrapper {
     margin-top: 60px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,17 +19,44 @@
     }
   }
 
+  #scrubberWrapper {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    position: relative;
+    cursor: pointer;
+    &:after {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #333333;
+    }
+    #scrubberCursor {
+      background-color: #5bff7a;
+      height: 24px;
+      width: 2px;
+      position: relative;
+      z-index: 1;
+    }
+  }
+
   #navWrapper {
     @include clearfix;
     margin: 0 auto;
     max-width: 1000px;
     width: 100%;
     > li {
+      font-size: 15px;
       float: left;
       margin-left: 10px;
       background-color: #1a1a1a;
-      padding: 5px 8px;
-      color: #272626;
+      padding: 6px 10px;
+      color: #333333;
       &.active {
         color: #9c9c9c;
       }
