@@ -51,7 +51,7 @@ module.exports.init = (data) => {
   bindEvents();
 }
 
-module.exports.onChange = (callback) => {
+module.exports.onTabChange = (callback) => {
   __callback__ = callback;
 }
 

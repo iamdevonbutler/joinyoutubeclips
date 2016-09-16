@@ -6,15 +6,12 @@ var $playerWrapper,
   __players__ = [],
   __playerTime__ = 0,
   __data__,
-  __callback__;
+  __playerChangeCallback__,
+  __timeChangeCallback__;
 
 function cache(data) {
   __data__ = data;
   $playerWrapper = $('#playerWrapper');
-}
-
-function bindEvents() {
-
 }
 
 function addPlayer(id, vid, active = false) {
@@ -90,7 +87,7 @@ function switchVideo(id, playVideo = true) {
   if (playVideo) nextPlayer.playVideo();
 
   // Call registered callbacks.
-  if (__callback__) __callback__.call(null, id);
+  if (__playerChangeCallback__) __playerChangeCallback__.call(null, id);
 }
 
 // @todo use DI
@@ -108,12 +105,12 @@ function initTimeKeeping() {
     let player = __players__[__activeId__];
     player.getCurrentTime().then((time) => {
       __playerTime__ = time;
+      if (__timeChangeCallback__) {
+        let segment = utils.getSegmentFromData(__data__, __activeId__);
+        __timeChangeCallback__.call(null, time, segment[0], segment[1]);
+      }
     });
-  }, 50);
-}
-
-function getPlayerTime() {
-  return __playerTime__;
+  }, 16);
 }
 
 function init(data) {
@@ -121,7 +118,6 @@ function init(data) {
   addPlayers(data);
   bufferVideos();
   initTimeKeeping();
-  // bindEvents();
 }
 
 module.exports.init = init;
@@ -130,6 +126,10 @@ module.exports.init = init;
 
 module.exports.switchPlayer = switchVideo;
 
-module.exports.onChange = (callback) => {
-  __callback__ = callback;
+module.exports.onPlayerChange = (callback) => {
+  __playerChangeCallback__ = callback;
+}
+
+module.exports.onTimeChange = (callback) => {
+  __timeChangeCallback__ = callback;
 }
