@@ -55,7 +55,7 @@ module.exports.onChange = (callback) => {
   __callback__ = callback;
 }
 
-module.exports.switch = (id) => {
+module.exports.switchNav = (id) => {
   var $el = getTabById(id);
   changeTab($el);
 }

@@ -16,7 +16,7 @@ function bindEvents() {
 
 }
 
-function addItem(id, vid, active = false) {
+function addPlayer(id, vid, active = false) {
   var item = `<li data-id="${id}" ${active ? 'class="active"' : ''}><div></div></li>`;
 
   var segment = utils.getSegmentFromData(__data__, id);
@@ -26,7 +26,7 @@ function addItem(id, vid, active = false) {
   // Add item to DOM.
   $playerWrapper.append(item);
   var el = $playerWrapper.children().last().children()[0];
-  console.log(startTime, endTime);
+
   __players__[id] = YT(el, {
     videoId: vid,
     playerVars: {
@@ -46,17 +46,23 @@ function addItem(id, vid, active = false) {
       if (nextId) {
         switchVideo(nextId);
       }
+      else {
+        switchVideo('0.0', false);
+      }
+      // Reset original video to beginning.
+      let segments = utils.getSegmentFromData(__data__, id);
+      __players__[id].seekTo(segments[0]);
     }
   });
 
 }
 
-function addItems(data) {
+function addPlayers(data) {
   data.forEach((item, i) => {
     item.segments.forEach((segment, ii) => {
       let active = i === 0 && ii === 0;
       let id = `${i}.${ii}`;
-      addItem(id, item.vid, active);
+      addPlayer(id, item.vid, active);
     });
   });
 }
@@ -66,33 +72,46 @@ function getVideoById(id) {
 }
 
 // @todo hack - this is an async operation and we really should return a promise.
-function changeVideoDisplay(id) {
+function changePlayerDisplay(id) {
   var $el = getVideoById(id);
   $playerWrapper.children().removeClass('active');
   $el.addClass('active');
 }
 
-
 // @todo hack - async not handled properly.
-function switchVideo(id) {
+function switchVideo(id, playVideo = true) {
   var currentPlayer = __players__[__activeId__];
   var nextPlayer = __players__[id];
   __activeId__ = id; // Update activeId in hacky closure state.
 
-  changeVideoDisplay(id);
+  changePlayerDisplay(id);
   currentPlayer.pauseVideo();
-  nextPlayer.playVideo();
+  if (playVideo) nextPlayer.playVideo();
+
+  // Call registered callbacks.
+  if (__callback__) __callback__.call(null, id);
+}
+
+// @todo use DI
+function bufferVideos() {
+  Object.keys(__players__).forEach((key, i) => {
+    let player = __players__[key];
+    if (i === 0) return;
+    player.playVideo();
+    player.pauseVideo();
+  });
 }
 
 function init(data) {
   cache(data);
-  addItems(data);
+  addPlayers(data);
+  bufferVideos();
   // bindEvents();
 }
 
 module.exports.init = init;
 
-module.exports.switch = switchVideo;
+module.exports.switchPlayer = switchVideo;
 
 module.exports.onChange = (callback) => {
   __callback__ = callback;
