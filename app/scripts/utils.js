@@ -16,6 +16,16 @@ module.exports.getSegmentFromData = (data, id) => {
   return data[keys[0]].segments[keys[1]];
 }
 
+module.exports.getSegmentFromData = (data, id) => {
+  var keys = id.split('.');
+  return data[keys[0]].segments[keys[1]];
+}
+
+module.exports.getDurationFromData = (data, id) => {
+  var segments = this.getSegmentFromData(data, id);
+  return segments[1] - segments[0];
+}
+
 module.exports.getNextIdFromData = (data, id) => {
   var keys = id.split('.');
   var nextSegment = data[keys[0]].segments[parseInt(keys[1], 10) + 1];

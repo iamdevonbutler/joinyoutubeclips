@@ -1,32 +1,76 @@
 const utils = require('./utils');
 
-var $scrubberWrapper,
-  $scrubberCursor,
-  __scrubberWidth__;
+class Scrubber {
 
-// pos - value btw 0 - 1.
-function updatePosition(currentTime, startTime, endTime) {
-  var duration = endTime - startTime;
-  var pos = (currentTime / duration) * __scrubberWidth__;
-  console.log(pos);
-  $scrubberCursor[0].style['transform'] = "translateX(" + pos + "px) translateZ(0) scale(1)";
-  // $scrubberCursor[0].style['-webkit-transform'] = "translateX(" + pos + "px) translateZ(0) scale(1)";
+  constructor(startTime, endTime, easing = 'linear') {
+    this._startTime = startTime;
+    this._endTime = endTime;
+    this._easing = easing;
 
-  // $scrubberCursor.css('transform', `translate3d(${pos}px, 0, 0`);
+    this._prefix = this._getPrefix();
+    this._cache();
+    this._bindEvents();
+
+    this._pos = 0;
+    this._scrubberWidth = this._$scrubberWrapper.width();
+  }
+
+  _cache() {
+    this._$scrubberWrapper = $('#scrubberWrapper');
+    this._$scrubberCursor = $('#scrubberCursor');
+  }
+
+  // @todo unbind on class destory.
+  _bindEvents() {
+    var handler = () => this._scrubberWidth = this._$scrubberWrapper.width();
+    var $window = $(window);
+    $window.on('resize', handler);
+    /**
+     * API public.
+     */
+    this.destory = () => $window.unbind('resize', handler);
+  }
+
+  _getPrefix() {
+    var styles = window.getComputedStyle(document.documentElement, ''),
+      pre = (Array.prototype.slice
+        .call(styles)
+        .join('')
+        .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
+      )[1],
+      dom = ('webkit|Moz|MS|O').match(new RegExp('(' + pre + ')', 'i'))[1];
+    return {
+      dom: dom,
+      lowercase: pre,
+      css: '-' + pre + '-',
+      js: pre[0].toUpperCase() + pre.substr(1)
+    };
+  }
+
+  start(start) {
+    var duration = this._endTime - this._startTime;
+    var length = duration - start;
+    var pos = start > 0 ? (start / length) * this._scrubberWidth : this._scrubberWidth;
+
+    this._$scrubberCursor[0].style[this._prefix.dom + 'TransitionTimingFunction'] = this._easing;
+    this._$scrubberCursor[0].style[this._prefix.dom + 'TransitionDuration'] = length * 1000 + 'ms';
+    this._$scrubberCursor[0].style[this._prefix.dom + 'Transform'] = "translateX(" + pos + "px) translateZ(0) scale(1)";
+  }
+
+  pause() {
+    this._$scrubberCursor[0].style[prefix.dom + 'TransitionDuration'] = 0 + 'ms';
+    this._$scrubberCursor[0].style[prefix.dom + 'Transform'] = "translateX(" + 0 + "px) translateZ(0) scale(1)";
+  }
+
+  restart() {}
+
+  onEnd() {}
+  onClick() {}
+  onTimeChange() {}
+
 }
 
-function cache() {
-  $scrubberWrapper = $('#scrubberWrapper');
-  $scrubberCursor = $('#scrubberCursor');
-}
-
-module.exports.init = () => {
-  cache();
-  __scrubberWidth__ = $scrubberWrapper.width();
-  console.log(__scrubberWidth__);
-  $(window).on('resize', () => {
-    __scrubberWidth__ = $scrubberWrapper.width();
-  });
-};
-
-module.exports.updatePosition = updatePosition;
+/**
+ * Constructor function.
+ */
+module.exports = Scrubber;

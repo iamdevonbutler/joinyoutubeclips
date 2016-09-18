@@ -1,6 +1,7 @@
 const utils = require('./utils');
 
-var $navWrapper, __callback__;
+var $navWrapper,
+  __callback__;
 
 function cache() {
   $navWrapper = $('#navWrapper');

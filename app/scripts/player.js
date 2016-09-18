@@ -3,7 +3,7 @@ const utils = require('./utils');
 
 var $playerWrapper,
   __activeId__ = '0.0',
-  __players__ = [],
+  __players__ = {},
   __playerTime__ = 0,
   __data__,
   __playerChangeCallback__,
@@ -42,10 +42,10 @@ function addPlayer(id, vid, active = false) {
       let id = $(event.target.a).parent().attr('data-id');
       let nextId = utils.getNextIdFromData(__data__, id);
       if (nextId) {
-        switchVideo(nextId);
+        switchPlayer(nextId);
       }
       else {
-        switchVideo('0.0', false);
+        switchPlayer('0.0', false);
       }
       // Reset original video to beginning.
       let segments = utils.getSegmentFromData(__data__, id);
@@ -77,7 +77,7 @@ function changePlayerDisplay(id) {
 }
 
 // @todo hack - async not handled properly.
-function switchVideo(id, playVideo = true) {
+function switchPlayer(id, playVideo = true) {
   var currentPlayer = __players__[__activeId__];
   var nextPlayer = __players__[id];
   __activeId__ = id; // Update activeId in hacky closure state.
@@ -87,49 +87,37 @@ function switchVideo(id, playVideo = true) {
   if (playVideo) nextPlayer.playVideo();
 
   // Call registered callbacks.
-  if (__playerChangeCallback__) __playerChangeCallback__.call(null, id);
+  execPlayerChangeCallbacks(id);
 }
 
 // @todo use DI
-function bufferVideos() {
-  Object.keys(__players__).forEach((key, i) => {
-    let player = __players__[key];
+function bufferPlayers(players) {
+  var keys = Object.keys(players);
+  keys.forEach((key, i) => {
+    let player = players[key];
     if (i === 0) return;
     player.playVideo();
     player.pauseVideo();
   });
 }
 
-function initTimeKeeping() {
-  setInterval(() => {
-    let player = __players__[__activeId__];
-    player.getCurrentTime().then((time) => {
-      __playerTime__ = time;
-      if (__timeChangeCallback__) {
-        let segment = utils.getSegmentFromData(__data__, __activeId__);
-        __timeChangeCallback__.call(null, time, segment[0], segment[1]);
-      }
-    });
-  }, 16);
+function execPlayerChangeCallbacks(id) {
+  if (__playerChangeCallback__) {
+    __playerChangeCallback__.call(null, id);
+  }
 }
 
 function init(data) {
   cache(data);
   addPlayers(data);
-  bufferVideos();
-  initTimeKeeping();
+  bufferPlayers(__players__);
+  execPlayerChangeCallbacks('0.0');
 }
 
 module.exports.init = init;
 
-module.exports.init = init;
-
-module.exports.switchPlayer = switchVideo;
+module.exports.switchPlayer = switchPlayer;
 
 module.exports.onPlayerChange = (callback) => {
   __playerChangeCallback__ = callback;
-}
-
-module.exports.onTimeChange = (callback) => {
-  __timeChangeCallback__ = callback;
 }

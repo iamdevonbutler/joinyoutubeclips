@@ -5,7 +5,7 @@
  */
 const nav = require('./nav');
 const player = require('./player');
-const scrubber = require('./scrubber');
+const Scrubber = require('./scrubber');
 const utils = require('./utils');
 
 (($) => {
@@ -17,13 +17,17 @@ const utils = require('./utils');
       {vid: 'glWKKOro8QU', segments: [[0, 5], [100, 105]]},
     ];
 
-    player.init(data);
-    nav.init(data);
-    scrubber.init();
-
     nav.onTabChange(player.switchPlayer);
-    player.onPlayerChange(nav.switchNav);
-    player.onTimeChange(scrubber.updatePosition);
+    player.onPlayerChange((id) => {
+      var segments = utils.getSegmentFromData(data, id);
+      var duration = segments[1] - segments[0];
+      var scrubber = new Scrubber(segments[0], segments[1]);
+      scrubber.start(0);
+      nav.switchNav(id);
+    });
+
+    nav.init(data);
+    player.init(data);
 
   });
 
