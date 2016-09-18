@@ -26,9 +26,13 @@ const utils = require('./utils');
       nav.switchNav(id);
     });
 
-    var scrubber = new Scrubber(0, 10);
-    scrubber.init();
-    
+    var scrubber = new Scrubber({
+      startTime: 0,
+      endTime: 10,
+      cursorColor: '',
+      canvasId: 'scrubberWrapper'
+    });
+
     nav.init(data);
     player.init(data);
 

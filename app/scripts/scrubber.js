@@ -1,27 +1,82 @@
 const utils = require('./utils');
 
+/**
+ * @todo make resize event optional.
+ * @todo make jquery free
+ * @todo add custom cursor styling (via JS and CSS maybe)
+ */
+
 class Scrubber {
 
-  constructor(startTime, endTime, easing = 'linear') {
+  constructor(params) {
+    // Set vars.
+    const {startTime, endTime, canvasId, cursorColor} = params;
     this._startTime = startTime;
     this._endTime = endTime;
-    this._easing = easing;
+    this._canvasId = canvasId;
+    this._cursorColor = cursorColor || '#5bff7a';
 
     this._cache();
     this._bindEvents();
+    this._canvasWidth = this._getCanvasWidth();
+    this._initCanvas();
+    this._drawCursor(0);
 
-    this._pos = 0;
-    this._scrubberWidth = this._$scrubberWrapper.width();
+    var self = this;
+    setTimeout(() => {
+      console.log(8);
+        self._animateCursor(0);
+    }, 1000);
+  }
+
+  _getCanvasWidth() {
+    return this._$canvasWrapper.width();
+  }
+
+  _initCanvas() {
+  	var canvas = this._$canvasWrapper[0];
+  	var ctx = canvas.getContext('2d');
+
+  	canvas.width = this._canvasWidth;
+  	canvas.height = 24;
+
+    // Set vars.
+    this._canvas = canvas;
+    this._ctx = ctx;
+  }
+
+  _drawCursor(xPos) {
+    var ctx = this._ctx;
+    ctx.beginPath();
+    ctx.fillStyle = this._cursorColor;
+    ctx.fillRect(xPos, 0, 1, 24);
+    ctx.closePath();
+  }
+
+  _clearCursor(xPos) {
+    var ctx = this._ctx;
+    ctx.clearRect(xPos, 0, 1, 24);
+  }
+
+  _animateCursor(xPos) {
+    var ctx = this._ctx;
+    var self = this;
+
+    this._clearCursor(xPos);
+    this._drawCursor(xPos+1);
+
+    requestAnimationFrame(() => {
+      self._animateCursor(xPos+1);
+    });
   }
 
   _cache() {
-    this._$scrubberWrapper = $('#scrubberWrapper');
-    this._$scrubberCursor = $('#scrubberCursor');
+    this._$canvasWrapper = $(`#${this._canvasId}`);
   }
 
   // @todo unbind on class destory.
   _bindEvents() {
-    var handler = () => this._scrubberWidth = this._$scrubberWrapper.width();
+    var handler = () => this._canvasWidth = this._$canvasWrapper.width();
     var $window = $(window);
     $window.on('resize', handler);
     /**
@@ -33,58 +88,17 @@ class Scrubber {
   start(start) {
     var duration = this._endTime - this._startTime;
     var length = duration - start;
-    var pos = start > 0 ? (start / length) * this._scrubberWidth : this._scrubberWidth;
+    var pos = start > 0 ? (start / length) * this._canvasWidth : this._canvasWidth;
   }
 
-  pause() {
-
-  }
-
+  pause() {}
   restart() {}
 
   onEnd() {}
   onClick() {}
+
   onTimeChange() {}
-
-  init() {
-  	var canvas = document.getElementById('scrubberWrapper');
-  	var ctx = canvas.getContext('2d');
-
-  	canvas.width = this._scrubberWidth;
-  	canvas.height = 24;
-
-    var x = 0;
-
-    function animate() {
-      ctx.beginPath();
-      ctx.fillStyle = '#000';
-      ctx.fillRect(x, 0, 1, 24);
-      ctx.closePath();
-
-      x += 2;
-
-      ctx.beginPath();
-      ctx.fillStyle = '#5bff7a';
-      ctx.fillRect(x, 0, 1, 24);
-      ctx.closePath();
-
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-    // var x = 0;
-    // ctx.beginPath();
-    // ctx.fillStyle = '#5bff7a';
-  	// ctx.fillRect(x, 0, 2, 24);
-    // ctx.closePath();
-
-    var self = this;
-    setTimeout(() => {
-      x = 0;
-      self.init();
-    }, 5000);
-
-  }
+  getTime() {}
 
 }
 
