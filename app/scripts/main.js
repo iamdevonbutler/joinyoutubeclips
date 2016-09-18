@@ -29,12 +29,15 @@ const utils = require('./utils');
     var scrubber = new Scrubber({
       startTime: 0,
       endTime: 10,
-      cursorColor: '',
-      canvasId: 'scrubberWrapper'
+      cursorColor: '#f12b24',
+      canvasId: 'scrubberWrapper',
     });
 
     nav.init(data);
     player.init(data);
+
+    player.onPause(scrubber.pause);
+    // player.onPlay(scrubber.unpause);
 
   });
 

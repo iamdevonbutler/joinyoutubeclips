@@ -7,7 +7,9 @@ var $playerWrapper,
   __playerTime__ = 0,
   __data__,
   __playerChangeCallback__,
-  __timeChangeCallback__;
+  __timeChangeCallback__,
+  __onPauseCallback__,
+  __onPlayCallback__;
 
 function cache(data) {
   __data__ = data;
@@ -107,9 +109,14 @@ function execPlayerChangeCallbacks(id) {
   }
 }
 
+function bindEvents() {
+  $playerWrapper.on('click', __playerClickCallback__);
+}
+
 function init(data) {
   cache(data);
   addPlayers(data);
+  bindEvents()
   bufferPlayers(__players__);
 }
 
@@ -119,4 +126,12 @@ module.exports.switchPlayer = switchPlayer;
 
 module.exports.onPlayerChange = (callback) => {
   __playerChangeCallback__ = callback;
+}
+
+module.exports.onPause = (callback) => {
+  __onPauseCallback__ = callback;
+}
+
+module.exports.onPlay = (callback) => {
+  __onPlayCallback__ = callback;
 }
