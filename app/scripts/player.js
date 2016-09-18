@@ -111,7 +111,6 @@ function init(data) {
   cache(data);
   addPlayers(data);
   bufferPlayers(__players__);
-  execPlayerChangeCallbacks('0.0');
 }
 
 module.exports.init = init;

@@ -37,13 +37,17 @@ function bindEvents() {
     }
     if (__callback__) {
       let id = $el.attr('data-id');
-      __callback__.call(null, id);
+      execTabChangeCallbacks(id);
     }
   });
 }
 
 function getTabById(id) {
   return $navWrapper.find(`> [data-id="${id}"]`);
+}
+
+function execTabChangeCallbacks(id) {
+  __callback__.call(null, id);
 }
 
 module.exports.init = (data) => {

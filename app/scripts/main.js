@@ -19,13 +19,16 @@ const utils = require('./utils');
 
     nav.onTabChange(player.switchPlayer);
     player.onPlayerChange((id) => {
-      var segments = utils.getSegmentFromData(data, id);
-      var duration = segments[1] - segments[0];
-      var scrubber = new Scrubber(segments[0], segments[1]);
-      scrubber.start(0);
+      // var segments = utils.getSegmentFromData(data, id);
+      // var duration = segments[1] - segments[0];
+      // var scrubber = new Scrubber(segments[0], segments[1]);
+      // scrubber.start(0);
       nav.switchNav(id);
     });
 
+    var scrubber = new Scrubber(0, 10);
+    scrubber.init();
+    
     nav.init(data);
     player.init(data);
 

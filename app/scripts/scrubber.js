@@ -7,7 +7,6 @@ class Scrubber {
     this._endTime = endTime;
     this._easing = easing;
 
-    this._prefix = this._getPrefix();
     this._cache();
     this._bindEvents();
 
@@ -31,35 +30,14 @@ class Scrubber {
     this.destory = () => $window.unbind('resize', handler);
   }
 
-  _getPrefix() {
-    var styles = window.getComputedStyle(document.documentElement, ''),
-      pre = (Array.prototype.slice
-        .call(styles)
-        .join('')
-        .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
-      )[1],
-      dom = ('webkit|Moz|MS|O').match(new RegExp('(' + pre + ')', 'i'))[1];
-    return {
-      dom: dom,
-      lowercase: pre,
-      css: '-' + pre + '-',
-      js: pre[0].toUpperCase() + pre.substr(1)
-    };
-  }
-
   start(start) {
     var duration = this._endTime - this._startTime;
     var length = duration - start;
     var pos = start > 0 ? (start / length) * this._scrubberWidth : this._scrubberWidth;
-
-    this._$scrubberCursor[0].style[this._prefix.dom + 'TransitionTimingFunction'] = this._easing;
-    this._$scrubberCursor[0].style[this._prefix.dom + 'TransitionDuration'] = length * 1000 + 'ms';
-    this._$scrubberCursor[0].style[this._prefix.dom + 'Transform'] = "translateX(" + pos + "px) translateZ(0) scale(1)";
   }
 
   pause() {
-    this._$scrubberCursor[0].style[prefix.dom + 'TransitionDuration'] = 0 + 'ms';
-    this._$scrubberCursor[0].style[prefix.dom + 'Transform'] = "translateX(" + 0 + "px) translateZ(0) scale(1)";
+
   }
 
   restart() {}
@@ -67,6 +45,46 @@ class Scrubber {
   onEnd() {}
   onClick() {}
   onTimeChange() {}
+
+  init() {
+  	var canvas = document.getElementById('scrubberWrapper');
+  	var ctx = canvas.getContext('2d');
+
+  	canvas.width = this._scrubberWidth;
+  	canvas.height = 24;
+
+    var x = 0;
+
+    function animate() {
+      ctx.beginPath();
+      ctx.fillStyle = '#000';
+      ctx.fillRect(x, 0, 1, 24);
+      ctx.closePath();
+
+      x += 2;
+
+      ctx.beginPath();
+      ctx.fillStyle = '#5bff7a';
+      ctx.fillRect(x, 0, 1, 24);
+      ctx.closePath();
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+    // var x = 0;
+    // ctx.beginPath();
+    // ctx.fillStyle = '#5bff7a';
+  	// ctx.fillRect(x, 0, 2, 24);
+    // ctx.closePath();
+
+    var self = this;
+    setTimeout(() => {
+      x = 0;
+      self.init();
+    }, 5000);
+
+  }
 
 }
 
