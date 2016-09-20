@@ -1,11 +1,5 @@
 const utils = require('./utils');
 
-/**
- * @todo make resize event optional.
- * @todo make jquery free
- * @todo add custom cursor styling (via JS and CSS maybe) provide ctx to a callback.
- */
-
 class Playbar {
 
   constructor(params) {
@@ -18,10 +12,10 @@ class Playbar {
     this._animationFrameRequestId;
     this._getTimeCallback;
     this._playbarChangeCallback;
+    this._playbarWidth;
+    this._playbarLeftBoundXPos;
 
     this._cache();
-    this._playbarWidth = this._getPlaybarWidth();
-    this._playbarLeftBoundXPos = this._getPlaybarLeftBoundXPos();
     this._initCanvas();
     this._bindEvents();
   }
@@ -36,6 +30,9 @@ class Playbar {
 
   _initCanvas() {
     var canvas, ctx;
+    this._playbarWidth = this._getPlaybarWidth();
+    this._playbarLeftBoundXPos = this._getPlaybarLeftBoundXPos();
+
   	canvas = this._$playbarWrapper[0];
   	ctx = canvas.getContext('2d');
 
@@ -56,21 +53,26 @@ class Playbar {
     var $window, resizeHandler;
     $window = $(window);
 
-    resizeHandler = () => {
+    $window.on('resize', ((event) => {
       this._playbarWidth = this._$playbarWrapper.width();
       this._playbarLeftBoundXPos = this._getPlaybarLeftBoundXPos();
-    }
-
-    $window.on('resize', resizeHandler.bind(this));
+      this._clearPlaybar();
+      this._initCanvas();
+    }).bind(this));
 
     this._$playbarWrapper.on('click', ((event) => {
       var xPos, newTime;
       if (this._playbarChangeCallback) {
         xPos = event.clientX - this._getPlaybarLeftBoundXPos();
         newTime = this._getClipTimeFromXPos(xPos);
+        this._clearPlaybar();
         this._playbarChangeCallback.call(null, newTime);
       }
     }).bind(this));
+  }
+
+  _clearPlaybar() {
+    this._ctx.clearRect(0, 0, this._playbarWidth, 4);
   }
 
   _getCurrentTime() {
@@ -90,7 +92,7 @@ class Playbar {
   _getClipTimeFromXPos(xPos) {
     var time, relativeTime;
     time = this._getPlaybarTimeFromXPos(xPos);
-    relativeTime = time - this._clipStartTime;
+    relativeTime = time + this._clipStartTime;
     return relativeTime;
   }
 
@@ -105,7 +107,6 @@ class Playbar {
   _drawCursor(xPos) {
     var ctx;
     ctx = this._ctx;
-    ctx.clearRect(0, 0, this._playbarWidth, 4);
     ctx.beginPath();
     ctx.fillStyle = this._cursorColor;
     ctx.fillRect(0, 0, xPos, 4);
@@ -115,11 +116,7 @@ class Playbar {
   _animateCursor(xPos) {
     this._drawCursor(xPos);
     this._animationFrameRequestId = requestAnimationFrame((() => {
-      this._getCurrentTime().then((currentTime) => {
-        var xPos;
-        xPos = this._getPlaybarXPosFromTime(currentTime);
-        this._animateCursor(xPos);
-      });
+      this._getCurrentTime().then(this.start.bind(this));
     }).bind(this));
   }
 
@@ -130,8 +127,9 @@ class Playbar {
   }
 
   reset(startTime, endTime) {
-    cancelAnimationFrame(this._animationFrameRequestId);
-    this._ctx.clearRect(0, 0, this._playbarWidth, 4);
+    console.log('reset');
+    this.pause();
+    this._clearPlaybar();
     this._clipStartTime = startTime !== undefined ? startTime : this._clipStartTime;
     this._clipEndTime = endTime !== undefined ? endTime : this._clipEndTime;
   }

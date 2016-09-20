@@ -36,6 +36,7 @@ function addPlayer(id, vid, active = false) {
     }
   });
 
+  // note: calling .seekTo() will trigger the 'playing' event even if the video is paused.
   __players__[id].on('stateChange', (event) => {
     var player, id, ended, playing, paused, currentTime;
 
@@ -58,17 +59,7 @@ function addPlayer(id, vid, active = false) {
 
     if (ended) {
       const nextId = utils.getNextIdFromData(__data__, id);
-      if (nextId) {
-        switchPlayer(nextId);
-      }
-      else {
-        return;
-        // If on the last clip, reset player to clip 1, but don't autoplay.
-        const clip1Id = '0.0';
-        const {startTime} = utils.getClipRange(__data__, '0.0');
-        switchPlayer('0.0', false);
-        __players__['0.0'].seekTo(startTime);
-      }
+      switchPlayer(nextId || '0.0', !!nextId);
     }
   });
 
@@ -83,6 +74,11 @@ function addPlayers(data) {
       addPlayer(id, item.vid, active);
     });
   });
+}
+
+function rewindClip(id) {
+  const {startTime} = utils.getClipRange(__data__, id);
+  __players__[id].seekTo(startTime);
 }
 
 function getVideoById(id) {
@@ -110,6 +106,8 @@ function switchPlayer(id, playVideo = true) {
       __playerChangeCallback__.call(null, id, currentTime);
     }
     if (playVideo) {
+      const {startTime, endTime} = utils.getClipRange(__data__, id);
+      if (currentTime >= endTime) nextPlayer.seekTo(startTime);
       nextPlayer.playVideo();
     }
   });

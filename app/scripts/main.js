@@ -5,6 +5,9 @@
  * data from URL for text to display inbtw videos (single param to include generic inbtw text)
  * get segment from data is unnecessary. could return an obj and use deconstruction to get start and end times
  * unbinding (not needed for this use case but necessary for webapps and such)
+ * need to get time on hover on playbar.
+ * add time to UI.
+ * add text to UI.
  */
 const nav = require('./nav');
 const player = require('./player');
@@ -12,7 +15,7 @@ const Playbar = require('./playbar');
 const utils = require('./utils');
 
 var data = [
-  {vid: 'Qa4uI_50Bmk', segments: [[0, 5], [100, 105]]},
+  {vid: 'Qa4uI_50Bmk', segments: [[0, 20], [100, 105]]},
   {vid: 'glWKKOro8QU', segments: [[0, 5], [100, 105]]},
 ];
 
@@ -20,7 +23,7 @@ var playbarOpts = {
   cursorColor: '#f12b24',
   canvasId: 'playbarWrapper',
   startTime: 0,
-  endTime: 5,
+  endTime: 20,
 };
 
 (($) => {
