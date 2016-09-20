@@ -8,6 +8,9 @@
  * need to get time on hover on playbar.
  * add time to UI.
  * add text to UI.
+ * fullscreen.
+ * sound bar.
+ * name 'clips' or 'videos'
  */
 const nav = require('./nav');
 const player = require('./player');
@@ -21,10 +24,10 @@ var data = [
 
 var playbarOpts = {
   cursorColor: '#f12b24',
-  canvasId: 'playbarWrapper',
+  canvasId: 'playbarCanvas',
   startTime: 0,
   endTime: 20,
-  playbarHeight: 12,
+  playbarHeight: 20,
 };
 
 (($) => {

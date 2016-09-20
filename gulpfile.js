@@ -21,14 +21,14 @@ const bootstrapTasks = ['lint', 'iconfont', 'images', 'fonts', 'extras', 'favico
 
 gulp.task('favicon', function () {
   return gulp.src('app/favicon.png').pipe(favicons({
-    appName: 'Pod God',
-    appDescription: 'www.podgod.io',
+    appName: 'joinYouTubeClips',
+    appDescription: 'www.joinyoutubeclips.com',
     developerName: 'Jason Pescione <jpescione@gmail.com>',
-    developerURL: 'www.podgod.io',
+    developerURL: 'https://github.com/iamdevonbutler',
     background: 'transparent',
     path: '/favicons/',
     html: '../../app/html/favicons.html',
-    url: 'http://wwww.podgod.io.com/favicon.png',
+    url: 'http://wwww.joinyoutubeclips.com/favicon.png',
     display: 'standalone',
     orientation: 'portrait',
     version: 2,

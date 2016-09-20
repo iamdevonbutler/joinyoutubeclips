@@ -8,8 +8,8 @@ class Playbar {
     this._clipStartTime = startTime;
     this._clipEndTime = endTime;
     this._canvasId = canvasId;
-    this._playbarHeight = playbarHeight || 4;
-    this._cursorColor = cursorColor || '#5bff7a';
+    this._playbarHeight = playbarHeight || 5;
+    this._cursorColor = cursorColor || '#f12b24';
     this._animationFrameRequestId;
     this._getTimeCallback;
     this._playbarChangeCallback;
