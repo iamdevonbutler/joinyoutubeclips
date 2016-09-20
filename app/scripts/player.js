@@ -17,13 +17,14 @@ function cache(data) {
 }
 
 function addPlayer(id, vid, active = false) {
-  var item = `<li data-id="${id}" ${active ? 'class="active"' : ''}><div></div></li>`;
-
+  var item, el;
   const {startTime, endTime} = utils.getClipRange(__data__, id);
+
+  item = `<li data-id="${id}" ${active ? 'class="active"' : ''}><div></div></li>`;
 
   // Add item to DOM.
   $playerWrapper.append(item);
-  var el = $playerWrapper.children().last().children()[0];
+  el = $playerWrapper.children().last().children()[0];
 
   __players__[id] = YT(el, {
     videoId: vid,
@@ -35,16 +36,17 @@ function addPlayer(id, vid, active = false) {
     }
   });
 
-  // Add lisitener - auto switch to next video when over.
   __players__[id].on('stateChange', (event) => {
-    let player = event.target;
-    let id = $(player.a).parent().attr('data-id');
+    var player, id, ended, playing, paused, currentTime;
 
-    let ended = event.data === 0;
-    let playing = event.data === 1;
-    let paused = event.data === 2;
+    player = event.target;
+    id = $(player.a).parent().attr('data-id');
 
-    let currentTime = player.getCurrentTime();
+    ended = event.data === 0;
+    playing = event.data === 1;
+    paused = event.data === 2;
+
+    currentTime = player.getCurrentTime();
 
     if (playing) {
       if (__onPlayCallback__) __onPlayCallback__.call(null, id, currentTime);
@@ -55,18 +57,18 @@ function addPlayer(id, vid, active = false) {
     }
 
     if (ended) {
-      let nextId = utils.getNextIdFromData(__data__, id);
+      const nextId = utils.getNextIdFromData(__data__, id);
       if (nextId) {
         switchPlayer(nextId);
       }
       else {
-        // If on the last clip, reset player to beginning but don't autoplay.
+        return;
+        // If on the last clip, reset player to clip 1, but don't autoplay.
+        const clip1Id = '0.0';
+        const {startTime} = utils.getClipRange(__data__, '0.0');
         switchPlayer('0.0', false);
+        __players__['0.0'].seekTo(startTime);
       }
-      // Reset original video to beginning.
-      // let segments = utils.getSegmentFromData(__data__, id);
-      // let startTime = segments[0];
-      // player.seekTo(startTime);
     }
   });
 
@@ -75,8 +77,9 @@ function addPlayer(id, vid, active = false) {
 function addPlayers(data) {
   data.forEach((item, i) => {
     item.segments.forEach((segment, ii) => {
-      let active = i === 0 && ii === 0;
-      let id = `${i}.${ii}`;
+      var active, id;
+      active = i === 0 && ii === 0;
+      id = `${i}.${ii}`;
       addPlayer(id, item.vid, active);
     });
   });
@@ -86,36 +89,38 @@ function getVideoById(id) {
   return $playerWrapper.find(`> [data-id="${id}"]`);
 }
 
-// @todo hack - this is an async operation and we really should return a promise.
 function changePlayerDisplay(id) {
-  var $el = getVideoById(id);
+  var $el;
+  $el = getVideoById(id);
   $playerWrapper.children().removeClass('active');
   $el.addClass('active');
 }
 
-// @todo hack - async not handled properly.
+// @todo async (.playVideo()) not handled properly.
 function switchPlayer(id, playVideo = true) {
-  var currentPlayer = __players__[__activeId__];
-  var nextPlayer = __players__[id];
+  var currentPlayer, nextPlayer;
+  currentPlayer = __players__[__activeId__];
+  nextPlayer = __players__[id];
   __activeId__ = id; // Update activeId in hacky closure state.
 
   changePlayerDisplay(id);
   currentPlayer.pauseVideo();
-  let currentTime = nextPlayer.getCurrentTime();
-  // Call registered callbacks.
-  if (__playerChangeCallback__) {
-    __playerChangeCallback__.call(null, id, currentTime);
-  }
-  if (playVideo) {
-    nextPlayer.playVideo();
-  }
+  nextPlayer.getCurrentTime().then((currentTime) => {
+    if (__playerChangeCallback__) {
+      __playerChangeCallback__.call(null, id, currentTime);
+    }
+    if (playVideo) {
+      nextPlayer.playVideo();
+    }
+  });
 }
 
-// @todo use DI
 function bufferPlayers(players) {
-  var keys = Object.keys(players);
+  var keys;
+  keys = Object.keys(players);
   keys.forEach((key, i) => {
-    let player = players[key];
+    var player;
+    player = players[key];
     if (i === 0) return;
     player.playVideo();
     player.pauseVideo();
@@ -134,6 +139,10 @@ module.exports.switchPlayer = switchPlayer;
 
 module.exports.onPlayerChange = (callback) => {
   __playerChangeCallback__ = callback;
+}
+
+module.exports.seekTo = (time) => {
+  return __players__[__activeId__].seekTo(time);
 }
 
 module.exports.getCurrentTime = (callback) => {

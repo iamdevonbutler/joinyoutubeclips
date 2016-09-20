@@ -4,6 +4,7 @@
  * organize clips nav. have a title for each video, and multiple segments to the right
  * data from URL for text to display inbtw videos (single param to include generic inbtw text)
  * get segment from data is unnecessary. could return an obj and use deconstruction to get start and end times
+ * unbinding (not needed for this use case but necessary for webapps and such)
  */
 const nav = require('./nav');
 const player = require('./player');
@@ -25,32 +26,43 @@ var playbarOpts = {
 (($) => {
 
   $(document).ready(function() {
-    // Get data.
+    /**
+     * Get data from URL.
+     */
     // const data = utils.getPlayerData(window.location);
 
-    // Init playbar.
+    /**
+     * Init playbar.
+     */
     var playbar = new Playbar(playbarOpts);
 
-    // Register events.
+    /**
+     * Init nav.
+     */
+    nav.init(data);
+
+    /**
+     * Register events.
+     */
+    playbar.registerTimeCallback(player.getCurrentTime);
+    playbar.onPlaybarChange(player.seekTo);
+
     nav.onTabChange(player.switchPlayer);
 
-    player.onPlay((id, time) => {
-      var currentTime = player.getCurrentTime();
-      playbar.start(currentTime);
-    });
+    player.onPlay((id, time) => playbar.start(time));
+
     player.onPause((id, time) => playbar.pause());
+
     player.onPlayerChange((id, time) => {
-      // Reset playbar.
       const {startTime, endTime} = utils.getClipRange(data, id);
       playbar.reset(startTime, endTime);
-      // Update nav.
       nav.switchNav(id);
     });
 
-    // Init nav.
-    nav.init(data);
 
-    // Init player.
+    /**
+     * Init player.
+     */
     player.init(data);
 
   });
