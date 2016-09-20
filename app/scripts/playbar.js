@@ -4,10 +4,11 @@ class Playbar {
 
   constructor(params) {
     // Set vars.
-    const {startTime, endTime, canvasId, cursorColor} = params;
+    const {startTime, endTime, canvasId, cursorColor, playbarHeight} = params;
     this._clipStartTime = startTime;
     this._clipEndTime = endTime;
     this._canvasId = canvasId;
+    this._playbarHeight = playbarHeight || 4;
     this._cursorColor = cursorColor || '#5bff7a';
     this._animationFrameRequestId;
     this._getTimeCallback;
@@ -37,7 +38,7 @@ class Playbar {
   	ctx = canvas.getContext('2d');
 
   	canvas.width = this._playbarWidth;
-  	canvas.height = 4;
+  	canvas.height = this._playbarHeight;
 
     // Set vars.
     this._canvas = canvas;
@@ -54,9 +55,6 @@ class Playbar {
     $window = $(window);
 
     $window.on('resize', ((event) => {
-      this._playbarWidth = this._$playbarWrapper.width();
-      this._playbarLeftBoundXPos = this._getPlaybarLeftBoundXPos();
-      this._clearPlaybar();
       this._initCanvas();
     }).bind(this));
 
@@ -65,14 +63,13 @@ class Playbar {
       if (this._playbarChangeCallback) {
         xPos = event.clientX - this._getPlaybarLeftBoundXPos();
         newTime = this._getClipTimeFromXPos(xPos);
-        this._clearPlaybar();
         this._playbarChangeCallback.call(null, newTime);
       }
     }).bind(this));
   }
 
   _clearPlaybar() {
-    this._ctx.clearRect(0, 0, this._playbarWidth, 4);
+    this._ctx.clearRect(0, 0, this._playbarWidth, this._playbarHeight);
   }
 
   _getCurrentTime() {
@@ -107,9 +104,10 @@ class Playbar {
   _drawCursor(xPos) {
     var ctx;
     ctx = this._ctx;
+    this._clearPlaybar();
     ctx.beginPath();
     ctx.fillStyle = this._cursorColor;
-    ctx.fillRect(0, 0, xPos, 4);
+    ctx.fillRect(0, 0, xPos, this._playbarHeight);
     ctx.closePath();
   }
 
@@ -127,7 +125,6 @@ class Playbar {
   }
 
   reset(startTime, endTime) {
-    console.log('reset');
     this.pause();
     this._clearPlaybar();
     this._clipStartTime = startTime !== undefined ? startTime : this._clipStartTime;

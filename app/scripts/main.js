@@ -24,6 +24,7 @@ var playbarOpts = {
   canvasId: 'playbarWrapper',
   startTime: 0,
   endTime: 20,
+  playbarHeight: 12,
 };
 
 (($) => {
