@@ -7,7 +7,6 @@
  * unbinding (not needed for this use case but necessary for webapps and such)
  * need to get time on hover on playbar.
  * add time to UI.
- * add text to UI.
  * fullscreen.
  * sound bar.
  * name 'clips' or 'videos'

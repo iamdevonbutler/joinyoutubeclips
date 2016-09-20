@@ -2,7 +2,6 @@
 
   #playerWrapper {
     margin: 0 auto;
-    margin-bottom: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -42,6 +41,7 @@
     display: block;
     margin: 0 auto;
     margin-bottom: 15px;
+    padding-top: 5px;
     position: relative;
     cursor: pointer;
     &:hover #playbarMask {
