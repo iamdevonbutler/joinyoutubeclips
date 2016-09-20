@@ -16,9 +16,12 @@ module.exports.getSegmentFromData = (data, id) => {
   return data[keys[0]].segments[keys[1]];
 }
 
-module.exports.getSegmentFromData = (data, id) => {
-  var keys = id.split('.');
-  return data[keys[0]].segments[keys[1]];
+module.exports.getClipRange = (data, id) => {
+  var segment = this.getSegmentFromData(data, id);
+  return {
+    startTime: segment[0],
+    endTime: segment[1],
+  };
 }
 
 module.exports.getDurationFromData = (data, id) => {

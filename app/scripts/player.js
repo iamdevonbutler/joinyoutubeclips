@@ -19,9 +19,7 @@ function cache(data) {
 function addPlayer(id, vid, active = false) {
   var item = `<li data-id="${id}" ${active ? 'class="active"' : ''}><div></div></li>`;
 
-  var segment = utils.getSegmentFromData(__data__, id);
-  var startTime = segment[0];
-  var endTime = segment[1];
+  const {startTime, endTime} = utils.getClipRange(__data__, id);
 
   // Add item to DOM.
   $playerWrapper.append(item);
@@ -39,19 +37,36 @@ function addPlayer(id, vid, active = false) {
 
   // Add lisitener - auto switch to next video when over.
   __players__[id].on('stateChange', (event) => {
+    let player = event.target;
+    let id = $(player.a).parent().attr('data-id');
+
     let ended = event.data === 0;
+    let playing = event.data === 1;
+    let paused = event.data === 2;
+
+    let currentTime = player.getCurrentTime();
+
+    if (playing) {
+      if (__onPlayCallback__) __onPlayCallback__.call(null, id, currentTime);
+    }
+
+    if (paused) {
+      if (__onPauseCallback__) __onPauseCallback__.call(null, id, currentTime);
+    }
+
     if (ended) {
-      let id = $(event.target.a).parent().attr('data-id');
       let nextId = utils.getNextIdFromData(__data__, id);
       if (nextId) {
         switchPlayer(nextId);
       }
       else {
+        // If on the last clip, reset player to beginning but don't autoplay.
         switchPlayer('0.0', false);
       }
       // Reset original video to beginning.
-      let segments = utils.getSegmentFromData(__data__, id);
-      __players__[id].seekTo(segments[0]);
+      // let segments = utils.getSegmentFromData(__data__, id);
+      // let startTime = segments[0];
+      // player.seekTo(startTime);
     }
   });
 
@@ -86,10 +101,14 @@ function switchPlayer(id, playVideo = true) {
 
   changePlayerDisplay(id);
   currentPlayer.pauseVideo();
-  if (playVideo) nextPlayer.playVideo();
-
+  let currentTime = nextPlayer.getCurrentTime();
   // Call registered callbacks.
-  execPlayerChangeCallbacks(id);
+  if (__playerChangeCallback__) {
+    __playerChangeCallback__.call(null, id, currentTime);
+  }
+  if (playVideo) {
+    nextPlayer.playVideo();
+  }
 }
 
 // @todo use DI
@@ -103,20 +122,9 @@ function bufferPlayers(players) {
   });
 }
 
-function execPlayerChangeCallbacks(id) {
-  if (__playerChangeCallback__) {
-    __playerChangeCallback__.call(null, id);
-  }
-}
-
-function bindEvents() {
-  $playerWrapper.on('click', __playerClickCallback__);
-}
-
 function init(data) {
   cache(data);
   addPlayers(data);
-  bindEvents()
   bufferPlayers(__players__);
 }
 
@@ -126,6 +134,10 @@ module.exports.switchPlayer = switchPlayer;
 
 module.exports.onPlayerChange = (callback) => {
   __playerChangeCallback__ = callback;
+}
+
+module.exports.getCurrentTime = (callback) => {
+  return __players__[__activeId__].getCurrentTime();
 }
 
 module.exports.onPause = (callback) => {
