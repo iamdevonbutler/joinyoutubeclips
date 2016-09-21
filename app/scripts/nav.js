@@ -12,29 +12,24 @@ function getVideoInfo(playerKey) {
   return __getVideoInfoCallback__.call(null, playerKey);
 }
 
-function getNavItemHTML(id, duration, active = false) {
-  var item;
-  item = `<li data-id="${id}" ${active ? 'class="active"' : ''}>${duration}</li>`;
-  return item;
-}
-
-function buildNav(data) {
+function buildNav(data, info) {
   var html = '<ul>';
   data.forEach((item, i) => {
     let li = '<li>';
     let playerKey = `${i}.0`;
-    getVideoInfo(playerKey).then((info) => {
-      console.log(info); 
-    });
+    let videoInfo = info[i];
+    li += `<a href="${videoInfo.url}" id="navItemTitle" target="_blank">${videoInfo.title}</a>`;
+    li += '<ul id="navItemClipsWrapper">';
     item.segments.forEach((segment, ii) => {
       var active, id, duration;
       active = i === 0 && ii === 0;
       id = `${i}.${ii}`;
       duration = utils.secondsToDisplayTime(segment[1] - segment[0]);
-      getNavItemHTML(id, duration, active);
+      li += `<li data-id="${id}" ${active ? 'class="active"' : ''}>${duration}</li>`
     });
-    html += li + '</ul>';
+    html += li + '</li>';
   });
+  html += '</ul>';
   $navWrapper.append(html);
 }
 
@@ -64,8 +59,11 @@ function getTabById(id) {
 
 module.exports.init = (data) => {
   cache();
-  buildNav(data);
-  bindEvents();
+  getVideoInfo().then((info) => {
+    buildNav(data, info);
+    bindEvents();
+  });
+
 }
 
 module.exports.switchNav = (id) => {

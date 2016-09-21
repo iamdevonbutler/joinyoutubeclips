@@ -21,6 +21,34 @@
 }
 
 
-.icon-play:before {
+.icon-add:before {
 	content: "\E001";
+}
+
+.icon-edit:before {
+	content: "\E002";
+}
+
+.icon-exitfullscreen:before {
+	content: "\E003";
+}
+
+.icon-fullscreen:before {
+	content: "\E004";
+}
+
+.icon-highvolume:before {
+	content: "\E005";
+}
+
+.icon-lowvolume:before {
+	content: "\E006";
+}
+
+.icon-mediumvolume:before {
+	content: "\E007";
+}
+
+.icon-mute:before {
+	content: "\E008";
 }

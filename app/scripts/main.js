@@ -1,25 +1,25 @@
 /**
  * @todos
- * clip selection via url param
- * organize clips nav. have a title for each video, and multiple segments to the right
- * data from URL for text to display inbtw videos (single param to include generic inbtw text)
- * get segment from data is unnecessary. could return an obj and use deconstruction to get start and end times
- * unbinding (not needed for this use case but necessary for webapps and such)
- * need to get time on hover on playbar.
- * full URL (make clip title a link)
+ *
+ * clip selection via url param.
+ * data from URL for text to display inbtw videos (single param to include generic inbtw text).
+ * unbinding (not needed for this use case but necessary for webapps and such).
+ * error handling for player requests, e.g. getPlayerData & getVideoUrl.
+ *
  * add time to UI.
  * sound bar.
- * fullscreen (https://github.com/sindresorhus/screenfull.js/)
  * name 'clips' or 'videos' - ask corey.
- * cross browser testing
- * license.
+ * cross browser testing.
  * docs page is github page.
- * error handling for player requests, e.g. getPlayerData & getVideoUrl.
+ * edit / create new page.
+ * license.
+ * refactor code (styling into smaller files).
  */
 const nav = require('./nav');
 const player = require('./player');
 const Playbar = require('./playbar');
 const utils = require('./utils');
+const screenfull = require('screenfull');
 
 // @todo might be a good idea to add the video title to this object.
 var data = [
@@ -76,6 +76,16 @@ var playbarOpts = {
      */
     nav.onVideoInfoRequest(player.getVideoInfo);
     nav.init(data);
+
+    /**
+     * Fullscreen mode.
+     */
+    const target = $('#homepage')[0];
+    $(document).on('click', () => {
+      if (screenfull.enabled) {
+        screenfull.request(target);
+      }
+    });
 
   });
 

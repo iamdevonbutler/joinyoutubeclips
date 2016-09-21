@@ -147,22 +147,27 @@ module.exports.getCurrentTime = () => {
   return __players__[__activeId__].getCurrentTime();
 }
 
-module.exports.getVideoInfo = (...id) => {
-  console.log(191919);
-  var x = {a: 1};
-  var y = {...x};
-  var player;
-  player = __players__[id || __activeId__];
+function _getVideoInfo(player) {
   return new Promise((resolve, reject) => {
     Promise.all([
       player.getVideoData(),
       player.getVideoUrl(),
     ]).then((values) => {
       resolve({
-        // ...values[0],
-        // ...values[1],
+        ...values[0],
+        url: values[1],
       });
     });
+  });
+}
+
+module.exports.getVideoInfo = (id) => {
+  var ids, player;
+  ids = id ? [id.split('.')[0]] : __data__.map((item, key) => key.toString());
+  return new Promise((resolve, reject) => {
+    var promises;
+    promises = ids.map((id) => _getVideoInfo(__players__[`${id}.0`]));
+    Promise.all(promises).then(resolve, reject);
   });
 }
 
