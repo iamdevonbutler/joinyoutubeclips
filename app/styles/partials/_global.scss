@@ -5,6 +5,12 @@
   padding: 0.2em 0;
 }
 
+// Reset.
+a {
+  text-decoration: none;
+  color: #FFF;
+}
+
 body, html {
   height: 100%;
   min-height: 100%;
@@ -16,50 +22,7 @@ body {
   color: #333;
 }
 
-h1 {
-  font-family: 'BrushScriptMT', cursive;
-  color: #FFF;
-  font-size: 48px;
-}
-
-h2 {
-  font-family: 'Lato', sans-serif;;
-  color: #FFF;
-  font-weight: 600;
-  font-size: 24px;
-}
-
-span {
-  color: #FFF;
-  font-size: 21px;
-  -webkit-font-smoothing: antialiased;
-}
-
-li {
-  color: #FFF;
-  font-size: 16px;
-}
-
-.indent-item {
-  padding-left: 20px;
-}
-
-.icon {
-  color: #FFF;
-}
-
-.logo-typographic {
-  font-size: 42px;
-  font-family: 'BrushScriptMT', cursive;
-  color: #FFF;
-  display: block;
-}
-
 button {
   @include resetInput;
   cursor: pointer;
-}
-
-.icon-logo {
-  @include iconLogo;
 }

@@ -1,0 +1,31 @@
+#navWrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  > li {
+    margin-bottom: 15px;
+    > a, > ul {
+      display: inline-block;
+    }
+    > ul {
+      margin-left: 40px;
+    }
+    > ul > li {
+      margin-left: 10px;
+      display: inline-block;
+      font-size: 15px;
+      background-color: #1f1f1f;
+      padding: 6px 10px;
+      color: #555;
+      &.active {
+        color: #ccc;
+      }
+      &:first-child {
+        margin-left: 0;
+      }
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+  }
+}

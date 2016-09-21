@@ -13,7 +13,7 @@ function getVideoInfo(playerKey) {
 }
 
 function buildNav(data, info) {
-  var html = '<ul>';
+  var html = '';
   data.forEach((item, i) => {
     let li = '<li>';
     let playerKey = `${i}.0`;
@@ -25,21 +25,20 @@ function buildNav(data, info) {
       active = i === 0 && ii === 0;
       id = `${i}.${ii}`;
       duration = utils.secondsToDisplayTime(segment[1] - segment[0]);
-      li += `<li data-id="${id}" ${active ? 'class="active"' : ''}>${duration}</li>`
+      li += `<li data-id="${id}" ${active ? 'class="navItem active"' : 'class="navItem"'}>${duration}</li>`
     });
-    html += li + '</li>';
+    html += li + '</ul></li>';
   });
-  html += '</ul>';
-  $navWrapper.append(html);
+  $navWrapper.html(html);
 }
 
 function changeTab($el) {
-  $navWrapper.children().removeClass('active');
+  $navWrapper.find('.navItem').removeClass('active');
   $el.addClass('active');
 }
 
 function bindEvents() {
-  $navWrapper.on('click', 'li', (e) => {
+  $navWrapper.on('click', '.navItem', (e) => {
     var $el, active;
     $el = $(e.target);
     active = $el.hasClass('active');
@@ -54,7 +53,7 @@ function bindEvents() {
 }
 
 function getTabById(id) {
-  return $navWrapper.find(`> [data-id="${id}"]`);
+  return $navWrapper.find(`.navItem[data-id="${id}"]`);
 }
 
 module.exports.init = (data) => {

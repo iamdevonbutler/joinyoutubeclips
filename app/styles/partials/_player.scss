@@ -1,0 +1,27 @@
+#playerWrapper {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1000px;
+  @media only screen and (min-width: 768px) {
+    margin-top: 60px;
+  }
+  > li {
+    display: none;
+    width: 100%;
+    position: relative;
+    padding-bottom: 56.25%;
+    // height: 0;
+    &.active {
+      display: block;
+    }
+    > iframe {
+    	position: absolute;
+    	top: 0;
+    	left: 0;
+    	width: 100%;
+    	height: 100%;
+    }
+  }
+}

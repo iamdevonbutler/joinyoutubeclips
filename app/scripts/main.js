@@ -12,7 +12,6 @@
  * cross browser testing.
  * docs page is github page.
  * edit / create new page.
- * license.
  * refactor code (styling into smaller files).
  */
 const nav = require('./nav');
@@ -80,12 +79,12 @@ var playbarOpts = {
     /**
      * Fullscreen mode.
      */
-    const target = $('#homepage')[0];
-    $(document).on('click', () => {
-      if (screenfull.enabled) {
-        screenfull.request(target);
-      }
-    });
+    // const target = $('#homepage')[0];
+    // $(document).on('click', () => {
+    //   if (screenfull.enabled) {
+    //     screenfull.request(target);
+    //   }
+    // });
 
   });
 
