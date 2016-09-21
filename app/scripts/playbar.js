@@ -15,6 +15,8 @@ class Playbar {
     this._playbarChangeCallback;
     this._playbarWidth;
     this._playbarLeftBoundXPos;
+    this._$playbarWrapper;
+    this._$timeModalWrapper;
 
     this._cache();
     this._initCanvas();
@@ -47,11 +49,12 @@ class Playbar {
 
   _cache() {
     this._$playbarWrapper = $(`#${this._canvasId}`);
+    this._$timeModalWrapper = $('#playbarTimeModal');
   }
 
   // @todo unbind on class destory.
   _bindEvents() {
-    var $window, resizeHandler;
+    var $window;
     $window = $(window);
 
     $window.on('resize', ((event) => {
@@ -59,13 +62,36 @@ class Playbar {
     }).bind(this));
 
     this._$playbarWrapper.on('click', ((event) => {
-      var xPos, newTime;
+      var left, xPos, newTime;
       if (this._playbarChangeCallback) {
-        xPos = event.clientX - this._getPlaybarLeftBoundXPos();
+        left = event.pageX;
+        xPos = left - this._getPlaybarLeftBoundXPos();
         newTime = this._getClipTimeFromXPos(xPos);
         this._playbarChangeCallback.call(null, newTime);
       }
     }).bind(this));
+
+
+    this._$playbarWrapper.on('mouseleave', ((event) => {
+        this._$timeModalWrapper.css('display', '');
+    }).bind(this));
+
+    this._$playbarWrapper.on('mousemove', ((event) => {
+        var left, xPos, time;
+        left = event.pageX;
+
+        xPos = left - this._getPlaybarLeftBoundXPos();
+        time = this._getPlaybarTimeFromXPos(xPos);
+        time = time.toFixed(1);
+
+        this._$timeModalWrapper.html(time);
+        this._$timeModalWrapper.css({
+          display: 'block',
+          top: '-10px',
+          left: `${xPos-3}px`, // 3px offset centers div w/ mouse pos.
+        });
+    }).bind(this));
+
   }
 
   _clearPlaybar() {

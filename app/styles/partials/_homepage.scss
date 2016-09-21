@@ -36,13 +36,13 @@
   }
 
   #playbarWrapper {
+    position: relative;
     width: 100%;
     max-width: 1000px;
     display: block;
     margin: 0 auto;
     margin-bottom: 15px;
     padding-top: 5px;
-    position: relative;
     cursor: pointer;
     &:hover #playbarMask {
       transition: transform .4s;
@@ -57,6 +57,16 @@
       left: 0;
       right: 0;
       background-color: #000;
+    }
+    #playbarTimeModal {
+      width: 16px;
+      height: 8px;
+      // background-color: #333;
+      color: white;
+      position: absolute;
+      font-size: 12px;
+      font-weight: 300;
+      display: none;
     }
   }
 

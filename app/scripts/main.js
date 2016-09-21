@@ -6,16 +6,21 @@
  * get segment from data is unnecessary. could return an obj and use deconstruction to get start and end times
  * unbinding (not needed for this use case but necessary for webapps and such)
  * need to get time on hover on playbar.
+ * full URL (make clip title a link)
  * add time to UI.
- * fullscreen.
  * sound bar.
- * name 'clips' or 'videos'
+ * fullscreen (https://github.com/sindresorhus/screenfull.js/)
+ * name 'clips' or 'videos' - ask corey.
+ * cross browser testing
+ * license.
+ * docs page is github page.
  */
 const nav = require('./nav');
 const player = require('./player');
 const Playbar = require('./playbar');
 const utils = require('./utils');
 
+// @todo might be a good idea to add the video title to this object.
 var data = [
   {vid: 'Qa4uI_50Bmk', segments: [[0, 20], [100, 105]]},
   {vid: 'glWKKOro8QU', segments: [[0, 5], [100, 105]]},
@@ -64,7 +69,6 @@ var playbarOpts = {
       playbar.reset(startTime, endTime);
       nav.switchNav(id);
     });
-
 
     /**
      * Init player.
