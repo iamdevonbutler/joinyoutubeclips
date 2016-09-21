@@ -1,5 +1,10 @@
 const queryString = require('query-string');
 
+function getSegmentFromData(data, id) {
+  var keys = id.split('.');
+  return data[keys[0]].segments[keys[1]];
+}
+
 module.exports.secondsToDisplayTime = function(seconds) {
   var minutes = Math.floor(seconds/60);
   var seconds = seconds - minutes*60;
@@ -11,13 +16,10 @@ module.exports.getPlayerData = (query) => {
   return queryString.parse(query);
 }
 
-module.exports.getSegmentFromData = (data, id) => {
-  var keys = id.split('.');
-  return data[keys[0]].segments[keys[1]];
-}
+module.exports.getSegmentFromData = getSegmentFromData;
 
 module.exports.getClipRange = (data, id) => {
-  var segment = this.getSegmentFromData(data, id);
+  var segment = getSegmentFromData(data, id);
   return {
     startTime: segment[0],
     endTime: segment[1],

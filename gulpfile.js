@@ -77,7 +77,7 @@ gulp.task('styles', () => {
 
 gulp.task('scripts', () => {
   return browserify({debug: true})
-    // .transform(babelify)
+    .transform(babelify)
     .require('./app/scripts/main.js', {entry: true})
     .bundle()
     .on('error', function handleError(err) {
@@ -99,13 +99,12 @@ function lint(files, options) {
 
 gulp.task('lint', () => {
   return lint('app/scripts/**/*.js', {
-    fix: true
+    // useEslintrc: true,
   })
   .pipe(gulp.dest('app/scripts'));
 });
 gulp.task('lint:test', () => {
   return lint('test/spec/**/*.js', {
-    fix: true,
     env: {
       mocha: true
     }

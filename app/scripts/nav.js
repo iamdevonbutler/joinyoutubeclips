@@ -1,28 +1,41 @@
 const utils = require('./utils');
 
 var $navWrapper,
-  __tabChangeCallback__;
+  __tabChangeCallback__,
+  __getVideoInfoCallback__;
 
 function cache() {
   $navWrapper = $('#navWrapper');
 }
 
-function addItem(id, duration, active = false) {
-  var item;
-  item = `<li data-id="${id}" ${active ? 'class="active"' : ''}>${duration}</li>`;
-  $navWrapper.append(item);
+function getVideoInfo(playerKey) {
+  return __getVideoInfoCallback__.call(null, playerKey);
 }
 
-function addItems(data) {
+function getNavItemHTML(id, duration, active = false) {
+  var item;
+  item = `<li data-id="${id}" ${active ? 'class="active"' : ''}>${duration}</li>`;
+  return item;
+}
+
+function buildNav(data) {
+  var html = '<ul>';
   data.forEach((item, i) => {
+    let li = '<li>';
+    let playerKey = `${i}.0`;
+    getVideoInfo(playerKey).then((info) => {
+      console.log(info); 
+    });
     item.segments.forEach((segment, ii) => {
       var active, id, duration;
       active = i === 0 && ii === 0;
       id = `${i}.${ii}`;
       duration = utils.secondsToDisplayTime(segment[1] - segment[0]);
-      addItem(id, duration, active);
+      getNavItemHTML(id, duration, active);
     });
+    html += li + '</ul>';
   });
+  $navWrapper.append(html);
 }
 
 function changeTab($el) {
@@ -51,16 +64,20 @@ function getTabById(id) {
 
 module.exports.init = (data) => {
   cache();
-  addItems(data);
+  buildNav(data);
   bindEvents();
-}
-
-module.exports.onTabChange = (callback) => {
-  __tabChangeCallback__ = callback;
 }
 
 module.exports.switchNav = (id) => {
   var $el;
   $el = getTabById(id);
   changeTab($el);
+}
+
+module.exports.onTabChange = (callback) => {
+  __tabChangeCallback__ = callback;
+}
+
+module.exports.onVideoInfoRequest = (callback) => {
+  __getVideoInfoCallback__ = callback;
 }

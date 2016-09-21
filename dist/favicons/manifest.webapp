@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "name": "Pod God",
-  "description": "www.podgod.io",
+  "name": "joinYouTubeClips",
+  "description": "www.joinyoutubeclips.com",
   "icons": {
     "60": "/favicons/firefox_app_60x60.png",
     "128": "/favicons/firefox_app_128x128.png",
@@ -9,6 +9,6 @@
   },
   "developer": {
     "name": "Jason Pescione <jpescione@gmail.com>",
-    "url": "www.podgod.io"
+    "url": "https://github.com/iamdevonbutler"
   }
 }

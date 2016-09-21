@@ -100,7 +100,7 @@ class Playbar {
 
   _getCurrentTime() {
     if (!this._getTimeCallback) {
-      throw new Error('Callback not specified. Add callback using .registerTimeCallback()');
+      throw new Error('Callback not specified. Add callback using .onPlayerTimeRequest()');
     }
     return this._getTimeCallback.call(null);
   }
@@ -166,7 +166,7 @@ class Playbar {
     this._playbarChangeCallback = callback;
   }
 
-  registerTimeCallback(callback) {
+  onPlayerTimeRequest(callback) {
     this._getTimeCallback = callback;
   }
 

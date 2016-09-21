@@ -14,6 +14,7 @@
  * cross browser testing
  * license.
  * docs page is github page.
+ * error handling for player requests, e.g. getPlayerData & getVideoUrl.
  */
 const nav = require('./nav');
 const player = require('./player');
@@ -48,14 +49,9 @@ var playbarOpts = {
     var playbar = new Playbar(playbarOpts);
 
     /**
-     * Init nav.
-     */
-    nav.init(data);
-
-    /**
      * Register events.
      */
-    playbar.registerTimeCallback(player.getCurrentTime);
+    playbar.onPlayerTimeRequest(player.getCurrentTime);
     playbar.onPlaybarChange(player.seekTo);
 
     nav.onTabChange(player.switchPlayer);
@@ -74,6 +70,12 @@ var playbarOpts = {
      * Init player.
      */
     player.init(data);
+
+    /**
+     * Init nav.
+     */
+    nav.onVideoInfoRequest(player.getVideoInfo);
+    nav.init(data);
 
   });
 

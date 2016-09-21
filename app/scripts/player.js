@@ -143,8 +143,27 @@ module.exports.seekTo = (time) => {
   return __players__[__activeId__].seekTo(time);
 }
 
-module.exports.getCurrentTime = (callback) => {
+module.exports.getCurrentTime = () => {
   return __players__[__activeId__].getCurrentTime();
+}
+
+module.exports.getVideoInfo = (...id) => {
+  console.log(191919);
+  var x = {a: 1};
+  var y = {...x};
+  var player;
+  player = __players__[id || __activeId__];
+  return new Promise((resolve, reject) => {
+    Promise.all([
+      player.getVideoData(),
+      player.getVideoUrl(),
+    ]).then((values) => {
+      resolve({
+        // ...values[0],
+        // ...values[1],
+      });
+    });
+  });
 }
 
 module.exports.onPause = (callback) => {
