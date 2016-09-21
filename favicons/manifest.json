@@ -1,9 +1,13 @@
 {
-  "name": "Pod God",
-  "short_name": "Pod God",
+  "name": "joinYouTubeClips",
+  "short_name": "joinYouTubeClips",
+  "description": "www.joinyoutubeclips.com",
+  "dir": "auto",
+  "lang": "en-US",
   "display": "standalone",
   "orientation": "portrait",
   "start_url": "/?homescreen=1",
+  "background_color": "transparent",
   "icons": [
     {
       "src": "/favicons/android-chrome-36x36.png",
