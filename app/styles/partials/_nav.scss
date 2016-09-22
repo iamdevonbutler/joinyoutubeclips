@@ -3,11 +3,16 @@
   margin: 0 auto;
   > li {
     margin-bottom: 15px;
-    > a, > ul {
-      display: inline-block;
+    #navItemTitle {
+      margin-right: 25px;
+      margin-bottom: 15px;
+      color: #333;
+      &.active {
+        color: #FFF;
+      }
     }
-    > ul {
-      margin-left: 40px;
+    #navItemTitle, > ul {
+      display: inline-block;
     }
     > ul > li {
       margin-left: 10px;

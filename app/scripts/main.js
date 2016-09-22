@@ -13,6 +13,7 @@
  * docs page is github page.
  * edit / create new page.
  * refactor code (styling into smaller files).
+ * onHover u can position things ontop of the video and hide them like the top right icons in the player do by default.
  */
 const nav = require('./nav');
 const player = require('./player');

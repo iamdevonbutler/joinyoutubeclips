@@ -12,20 +12,23 @@ function getVideoInfo(playerKey) {
   return __getVideoInfoCallback__.call(null, playerKey);
 }
 
+// @todo meh...
 function buildNav(data, info) {
   var html = '';
   data.forEach((item, i) => {
     let li = '<li>';
     let playerKey = `${i}.0`;
     let videoInfo = info[i];
-    li += `<a href="${videoInfo.url}" id="navItemTitle" target="_blank">${videoInfo.title}</a>`;
+    let active = i === 0;
+    li += `<a href="${videoInfo.url}" id="navItemTitle" target="_blank" ${active ? 'class="active"' : ''}>${videoInfo.title}</a>`;
     li += '<ul id="navItemClipsWrapper">';
     item.segments.forEach((segment, ii) => {
-      var active, id, duration;
-      active = i === 0 && ii === 0;
-      id = `${i}.${ii}`;
-      duration = utils.secondsToDisplayTime(segment[1] - segment[0]);
-      li += `<li data-id="${id}" ${active ? 'class="navItem active"' : 'class="navItem"'}>${duration}</li>`
+      let active = i === 0 && ii === 0;
+      let id = `${i}.${ii}`;
+      let {startTime, endTime} = utils.getClipRange(data, id);
+      startTime = utils.secondsToDisplayTime(startTime);
+      endTime = utils.secondsToDisplayTime(endTime);
+      li += `<li data-id="${id}" ${active ? 'class="navItem active"' : 'class="navItem"'}>${startTime} - ${endTime}</li>`;
     });
     html += li + '</ul></li>';
   });
@@ -34,7 +37,10 @@ function buildNav(data, info) {
 
 function changeTab($el) {
   $navWrapper.find('.navItem').removeClass('active');
+  $navWrapper.find('#navItemTitle').removeClass('active');
   $el.addClass('active');
+  // @todo this is kinda gross.
+  $el.parent().parent().find('> a').addClass('active');
 }
 
 function bindEvents() {
