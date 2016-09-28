@@ -25,10 +25,11 @@
   .right {
     float: left;
     width: 100px;
+    position: relative;
   }
 
   #timeWidget {
-    color: #FFF;
+    color: #ccc;
     font-size: 11px;
     position: absolute;
     right: 0;
@@ -37,17 +38,46 @@
     }
   }
 
-  #soundIcon {
-    color: #FFF;
-    font-size: 28px;
-    padding-left: 12px;
-    position: relative;
-    top: -6px;
+  #soundWidget {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    #soundIcon {
+      color: #ccc;
+      font-size: 28px;
+      padding-left: 12px;
+      position: relative;
+      top: -6px;
+    }
+
+    &:hover #soundbar,
+    &:hover #soundbarBg {
+      display: block;
+    }
+
+    #soundbar, #soundbarBg {
+      display: none;
+      width: 65px;
+      height: 10px;
+      position: absolute;
+      top: 0;
+      left: 35px;
+      z-index: 10;
+    }
+    #soundbarBg {
+      background-color: #232323;
+    }
+    #soundbar {
+      background-color: red;
+      // width: 0;
+      z-index: 100;
+    }
+
   }
 
   canvas {
-    background: #333;
-    opacity: .7;
+    background: #232323;
     width: 100%;
     height: 20px;
   }

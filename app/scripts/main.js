@@ -6,18 +6,17 @@
  * unbinding (not needed for this use case but necessary for webapps and such).
  * error handling for player requests, e.g. getPlayerData & getVideoUrl.
  *
- * add time to UI.
  * sound bar.
  * name 'clips' or 'videos' - ask corey.
  * cross browser testing.
  * docs page is github page.
  * edit / create new page.
- * refactor code (styling into smaller files).
  * onHover u can position things ontop of the video and hide them like the top right icons in the player do by default.
  */
 const nav = require('./nav');
 const player = require('./player');
 const Playbar = require('./playbar');
+const Soundbar = require('./soundbar');
 const utils = require('./utils');
 const screenfull = require('screenfull');
 
@@ -49,10 +48,17 @@ var playbarOpts = {
     var playbar = new Playbar(playbarOpts);
 
     /**
+     * Init soundbar.
+     */
+    var soundbar = new Soundbar();
+
+    /**
      * Register events.
      */
-    playbar.onPlayerTimeRequest(player.getCurrentTime);
+    playbar.onTimeRequest(player.getCurrentTime);
     playbar.onPlaybarChange(player.seekTo);
+    soundbar.onVolumeRequest(player.getVolume);
+    soundbar.onSetVolumeRequest(player.setVolume);
 
     nav.onTabChange(player.switchPlayer);
 
@@ -76,6 +82,12 @@ var playbarOpts = {
      */
     nav.onVideoInfoRequest(player.getVideoInfo);
     nav.init(data);
+
+    /**
+     * Update soundbar.
+     */
+    soundbar.syncVolume();
+
 
     /**
      * Fullscreen mode.

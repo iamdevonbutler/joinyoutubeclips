@@ -144,6 +144,14 @@ module.exports.seekTo = (time) => {
   return __players__[__activeId__].seekTo(time);
 }
 
+module.exports.getVolume = () => {
+  return __players__[__activeId__].getVolume();
+}
+
+module.exports.setVolume = (volume) => {
+  return __players__[__activeId__].setVolume(volume);
+}
+
 module.exports.getCurrentTime = () => {
   return __players__[__activeId__].getCurrentTime();
 }
