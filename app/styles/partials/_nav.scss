@@ -3,18 +3,19 @@
   margin: 0 auto;
   > li {
     margin-bottom: 15px;
+    &.active #navItemTitle {
+      color: #FFF;
+    }
     #navItemTitle {
       margin-right: 25px;
       margin-bottom: 15px;
       color: #333;
-      &.active {
-        color: #FFF;
-      }
     }
-    #navItemTitle, > ul {
+    #navItemTitle,
+    #navItemClipsWrapper {
       display: inline-block;
     }
-    > ul > li {
+    #navItemClipsWrapper > li {
       margin-left: 10px;
       display: inline-block;
       font-size: 15px;

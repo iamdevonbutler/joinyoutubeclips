@@ -27,6 +27,7 @@ function buildNav(data, info) {
       let id = `${i}.${ii}`;
       let {startTime, endTime} = utils.getClipRange(data, id);
       startTime = utils.secondsToDisplayTime(startTime);
+      startTime = startTime === '0:00' ? '0' : startTime;
       endTime = utils.secondsToDisplayTime(endTime);
       li += `<li data-id="${id}" ${active ? 'class="navItem active"' : 'class="navItem"'}>${startTime} - ${endTime}</li>`;
     });
@@ -37,10 +38,10 @@ function buildNav(data, info) {
 
 function changeTab($el) {
   $navWrapper.find('.navItem').removeClass('active');
-  $navWrapper.find('#navItemTitle').removeClass('active');
   $el.addClass('active');
   // @todo this is kinda gross.
-  $el.parent().parent().find('> a').addClass('active');
+  $navWrapper.find('> li').removeClass('active');
+  $el.parent().parent().addClass('active');
 }
 
 function bindEvents() {
@@ -48,9 +49,9 @@ function bindEvents() {
     var $el, active;
     $el = $(e.target);
     active = $el.hasClass('active');
-    if (!active) {
-      changeTab($el);
-    }
+    // if (!active) {
+      // changeTab($el);
+    // }
     if (__tabChangeCallback__) {
       let id = $el.attr('data-id');
       __tabChangeCallback__.call(null, id);
