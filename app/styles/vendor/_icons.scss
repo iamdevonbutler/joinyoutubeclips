@@ -41,14 +41,18 @@
 	content: "\E005";
 }
 
-.icon-lowvolume:before {
+.icon-link:before {
 	content: "\E006";
 }
 
-.icon-mediumvolume:before {
+.icon-lowvolume:before {
 	content: "\E007";
 }
 
-.icon-mute:before {
+.icon-mediumvolume:before {
 	content: "\E008";
+}
+
+.icon-mute:before {
+	content: "\E009";
 }

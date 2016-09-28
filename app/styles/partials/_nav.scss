@@ -3,13 +3,24 @@
   margin: 0 auto;
   > li {
     margin-bottom: 15px;
-    &.active #navItemTitle {
+    &.active #navItemTitle,
+    &.active #linkIcon {
       color: #FFF;
     }
+    &:hover {
+      cursor: pointer;
+    }
     #navItemTitle {
-      margin-right: 25px;
       margin-bottom: 15px;
       color: #333;
+    }
+    #linkIcon {
+      color: #333;
+      font-size: 26px;
+      margin-left: 10px;
+      margin-right: 25px;
+      position: relative;
+      top: 10px;
     }
     #navItemTitle,
     #navItemClipsWrapper {
@@ -27,9 +38,6 @@
       }
       &:first-child {
         margin-left: 0;
-      }
-      &:hover {
-        cursor: pointer;
       }
     }
 

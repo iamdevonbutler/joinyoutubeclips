@@ -3,9 +3,18 @@
   <ul id="playerWrapper"></ul>
 
   <div id="playbarWrapper">
-    <canvas id="playbarCanvas"></canvas>
-    <div id="playbarMask"></div>
-    <div id="playbarTimeModal"></div>
+    <div class="left">
+      <canvas id="playbarCanvas"></canvas>
+      <div id="playbarMask"></div>
+      <div id="playbarTimeTooltip"></div>
+    </div>
+    <div class="right">
+      <span id="soundIcon" class="icon icon-mediumvolume"></span>
+      <span id="timeWidget">
+        <span id="currentTimeTicker">0:00</span>
+        <span id="durationTicker">0:00</span>
+      </span>
+    </div>
   </div>
 
   <ul id="navWrapper"></ul>

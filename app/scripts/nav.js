@@ -16,11 +16,12 @@ function getVideoInfo(playerKey) {
 function buildNav(data, info) {
   var html = '';
   data.forEach((item, i) => {
-    let li = '<li>';
     let playerKey = `${i}.0`;
     let videoInfo = info[i];
     let active = i === 0;
-    li += `<a href="${videoInfo.url}" id="navItemTitle" target="_blank" ${active ? 'class="active"' : ''}>${videoInfo.title}</a>`;
+    let li = `<li ${active ? 'class="active"' : ''}>`;
+    li += `<span data-id="${playerKey}" id="navItemTitle">${videoInfo.title}</span>`;
+    li += `<a href="${videoInfo.url}"id="linkIcon" class="icon-link icon" target="_blank"></a>`;
     li += '<ul id="navItemClipsWrapper">';
     item.segments.forEach((segment, ii) => {
       let active = i === 0 && ii === 0;
@@ -45,13 +46,9 @@ function changeTab($el) {
 }
 
 function bindEvents() {
-  $navWrapper.on('click', '.navItem', (e) => {
-    var $el, active;
+  $navWrapper.on('click', ['.navItem', '#navItemTitle'], (e) => {
+    var $el;
     $el = $(e.target);
-    active = $el.hasClass('active');
-    // if (!active) {
-      // changeTab($el);
-    // }
     if (__tabChangeCallback__) {
       let id = $el.attr('data-id');
       __tabChangeCallback__.call(null, id);

@@ -16,11 +16,15 @@ class Playbar {
     this._playbarWidth;
     this._playbarLeftBoundXPos;
     this._$playbarWrapper;
-    this._$timeModalWrapper;
+    this._$timeTooltipWrapper;
+    this._$currentTimeTicker;
+    this._$durationTicker;
+    this._currentTimeTickerInterval;
 
     this._cache();
     this._initCanvas();
     this._bindEvents();
+    this._updateTickerDuration();
   }
 
   _getPlaybarWidth() {
@@ -49,7 +53,9 @@ class Playbar {
 
   _cache() {
     this._$playbarWrapper = $(`#${this._canvasId}`);
-    this._$timeModalWrapper = $('#playbarTimeModal');
+    this._$timeTooltipWrapper = $('#playbarTimeTooltip');
+    this._$currentTimeTicker = $('#currentTimeTicker');
+    this._$durationTicker = $('#durationTicker');
   }
 
   // @todo unbind on class destory.
@@ -73,7 +79,7 @@ class Playbar {
 
 
     this._$playbarWrapper.on('mouseleave', ((event) => {
-        this._$timeModalWrapper.css('display', '');
+        this._$timeTooltipWrapper.css('display', '');
     }).bind(this));
 
     this._$playbarWrapper.on('mousemove', ((event) => {
@@ -84,8 +90,8 @@ class Playbar {
         time = this._getPlaybarTimeFromXPos(xPos);
         time = time.toFixed(1);
 
-        this._$timeModalWrapper.html(time);
-        this._$timeModalWrapper.css({
+        this._$timeTooltipWrapper.html(time);
+        this._$timeTooltipWrapper.css({
           display: 'block',
           top: '-10px',
           left: `${xPos-3}px`, // 3px offset centers div w/ mouse pos.
@@ -144,10 +150,32 @@ class Playbar {
     }).bind(this));
   }
 
+  _updateTickerDuration() {
+    var duration;
+    duration = this._clipEndTime - this._clipStartTime;
+    duration = utils.secondsToDisplayTime(duration);
+    this._$durationTicker.html(duration);
+  }
+
+  _initTicker() {
+    var time;
+    this._currentTimeTickerInterval = setInterval((() => {
+      this._getCurrentTime().then((time = 0) => {
+        time = Math.round(time - this._clipStartTime);
+        time = utils.secondsToDisplayTime(time);
+        this._$currentTimeTicker.html(time);
+      });
+    }).bind(this), 250);
+  }
+
   start(time) {
     var xPos;
+
     xPos = this._getPlaybarXPosFromTime(time);
     this._animateCursor(xPos);
+
+    this._initTicker();
+    this._updateTickerDuration();
   }
 
   reset(startTime, endTime) {
@@ -159,6 +187,7 @@ class Playbar {
 
   pause() {
     cancelAnimationFrame(this._animationFrameRequestId);
+    clearInterval(this._currentTimeTickerInterval);
   }
 
   onPlaybarChange(callback) {
