@@ -59,7 +59,7 @@ class Timer {
   }
 
   start() {
-    this._timerInterval = setInterval(::this._updateCurrentTime, 250);
+    this._timerInterval = setInterval(this._updateCurrentTime.bind(this), 250);
   }
 
   pause() {

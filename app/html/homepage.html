@@ -5,21 +5,12 @@
   <div id="playerFooter">
 
     <div id="playbarWrapper">
-      <canvas id="playbarCanvas"></canvas>
-      <div id="playbarMask"></div>
-      <div id="playbarTimeTooltip"></div>
+      @@include('./playbar.html')
     </div>
 
     <div id="playbarWidgetsWrapper">
-      <div id="soundWidget">
-        <span id="soundIcon" class="icon icon-mediumvolume"></span>
-        <div class="soundbar" id="soundbar"></div>
-        <div class="soundbar" id="soundbarBg"></div>
-      </div>
-      <div id="timeWidget">
-        <span id="currentTime"></span>
-        <span id="duration"></span>
-      </div>
+      @@include('./soundWidget.html')
+      @@include('./timeWidget.html')
     </div>
 
   </div>

@@ -92,11 +92,6 @@ var playbarOpts = {
     });
 
     /**
-     * Update soundbar.
-     */
-    soundbar.syncVolume();
-
-    /**
      * Init player.
      */
     player.init(data);
@@ -105,6 +100,11 @@ var playbarOpts = {
      * Init nav.
      */
     nav.init(data);
+
+    /**
+     * Update soundbar once player has init.
+     */
+    soundbar.syncVolume();
 
 
     /**
