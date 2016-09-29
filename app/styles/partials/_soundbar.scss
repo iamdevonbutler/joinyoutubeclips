@@ -1,0 +1,41 @@
+#soundWidget {
+  // position: absolute;
+  // left: 0;
+  // top: 0;
+
+  #soundIcon {
+    color: #ccc;
+    font-size: 28px;
+    padding-left: 12px;
+    position: relative;
+    top: -6px;
+  }
+
+  &:hover #soundbar,
+  &:hover #soundbarBg {
+    // display: block;
+    transform: translate3d(0, 0, 0);
+    transition: all .1s linear;
+  }
+
+  #soundbar,
+  #soundbarBg {
+    // display: none;
+    // position: absolute;
+    width: 65px;
+    height: 10px;
+    top: 0;
+    left: 35px;
+    z-index: 10;
+    transform: translate3d(-65px, 0, 0);
+    transition: all .1s linear;
+  }
+  #soundbarBg {
+    background-color: #232323;
+  }
+  #soundbar {
+    background-color: #f12b24;
+    z-index: 100;
+  }
+
+}

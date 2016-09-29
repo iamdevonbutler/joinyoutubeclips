@@ -6,10 +6,12 @@
  * unbinding (not needed for this use case but necessary for webapps and such).
  * error handling for player requests, e.g. getPlayerData & getVideoUrl.
  *
+ * make nav items a little bit smaller - maybe.
  * sound bar.
  * name 'clips' or 'videos' - ask corey.
  * cross browser testing.
  * docs page is github page.
+ * abstract out time widget.
  * edit / create new page.
  * onHover u can position things ontop of the video and hide them like the top right icons in the player do by default.
  */
@@ -18,6 +20,7 @@ const player = require('./player');
 const Playbar = require('./playbar');
 const Soundbar = require('./soundbar');
 const utils = require('./utils');
+const Timer = require('./timer');
 const screenfull = require('screenfull');
 
 // @todo might be a good idea to add the video title to this object.
@@ -53,24 +56,45 @@ var playbarOpts = {
     var soundbar = new Soundbar();
 
     /**
+     * Init timer.
+     */
+    var timer = new Timer({
+      startTime: playbarOpts.startTime,
+      endTime: playbarOpts.endTime,
+    });
+
+    /**
      * Register events.
      */
-    playbar.onTimeRequest(player.getCurrentTime);
     playbar.onPlaybarChange(player.seekTo);
+    playbar.onTimeRequest(player.getCurrentTime);
     soundbar.onVolumeRequest(player.getVolume);
     soundbar.onSetVolumeRequest(player.setVolume);
-
+    timer.onTimeRequest(player.getCurrentTime);
     nav.onTabChange(player.switchPlayer);
+    nav.onVideoInfoRequest(player.getVideoInfo);
 
-    player.onPlay((id, time) => playbar.start(time));
+    player.onPlay((id, time) => {
+      playbar.start(time);
+      timer.start();
+    });
 
-    player.onPause((id, time) => playbar.pause());
+    player.onPause((id, time) => {
+      playbar.pause();
+      timer.pause();
+    });
 
     player.onPlayerChange((id, time) => {
       const {startTime, endTime} = utils.getClipRange(data, id);
       playbar.reset(startTime, endTime);
+      timer.reset(startTime, endTime);
       nav.switchNav(id);
     });
+
+    /**
+     * Update soundbar.
+     */
+    soundbar.syncVolume();
 
     /**
      * Init player.
@@ -80,13 +104,7 @@ var playbarOpts = {
     /**
      * Init nav.
      */
-    nav.onVideoInfoRequest(player.getVideoInfo);
     nav.init(data);
-
-    /**
-     * Update soundbar.
-     */
-    soundbar.syncVolume();
 
 
     /**

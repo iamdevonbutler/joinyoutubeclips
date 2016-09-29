@@ -1,3 +1,33 @@
 #homepage {
 
+  #playerFooter {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    padding-top: 5px;
+    cursor: pointer;
+    @include clearfix;
+  }
+
+  // Playbar
+  #playbarWrapper {
+    float: left;
+    width: calc(100% - 100px);
+    position: relative; // for abs pos #playbarMask
+    &:hover #playbarMask {
+      transition: transform .4s;
+      transform: translateY(10px);
+    }
+  }
+
+  // Sound and time.
+  #playbarWidgetsWrapper {
+    float: left;
+    width: 100px;
+    position: relative;
+  }
+
 }

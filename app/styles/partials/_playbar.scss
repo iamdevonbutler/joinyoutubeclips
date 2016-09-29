@@ -1,87 +1,12 @@
 #playbarWrapper {
 
-  position: relative;
-  width: 100%;
-  max-width: 1000px;
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 15px;
-  padding-top: 5px;
-  cursor: pointer;
-  @include clearfix;
-
-  // Playbar
-  .left {
-    float: left;
-    width: calc(100% - 100px);
-    position: relative; // for abs pos #playbarMask
-    &:hover #playbarMask {
-      transition: transform .4s;
-      transform: translateY(10px);
-    }
-  }
-
-  // Sound and time.
-  .right {
-    float: left;
-    width: 100px;
-    position: relative;
-  }
-
-  #timeWidget {
-    color: #ccc;
-    font-size: 11px;
-    position: absolute;
-    right: 0;
-    > *:first-child::after {
-      content: ' / ';
-    }
-  }
-
-  #soundWidget {
-    position: absolute;
-    left: 0;
-    top: 0;
-
-    #soundIcon {
-      color: #ccc;
-      font-size: 28px;
-      padding-left: 12px;
-      position: relative;
-      top: -6px;
-    }
-
-    &:hover #soundbar,
-    &:hover #soundbarBg {
-      display: block;
-    }
-
-    #soundbar, #soundbarBg {
-      display: none;
-      width: 65px;
-      height: 10px;
-      position: absolute;
-      top: 0;
-      left: 35px;
-      z-index: 10;
-    }
-    #soundbarBg {
-      background-color: #232323;
-    }
-    #soundbar {
-      background-color: red;
-      // width: 0;
-      z-index: 100;
-    }
-
-  }
-
   canvas {
     background: #232323;
     width: 100%;
     height: 20px;
   }
 
+  // @todo - we don't need to use masking to accomplish this...
   #playbarMask {
     transition: transform .4s;
     width: 100%;

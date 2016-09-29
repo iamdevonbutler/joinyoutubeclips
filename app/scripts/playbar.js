@@ -17,14 +17,10 @@ class Playbar {
     this._playbarLeftBoundXPos;
     this._$playbarWrapper;
     this._$timeTooltipWrapper;
-    this._$currentTimeTicker;
-    this._$durationTicker;
-    this._currentTimeTickerInterval;
 
     this._cache();
     this._initCanvas();
     this._bindEvents();
-    this._updateTickerDuration();
   }
 
   _getPlaybarWidth() {
@@ -54,8 +50,6 @@ class Playbar {
   _cache() {
     this._$playbarWrapper = $(`#${this._canvasId}`);
     this._$timeTooltipWrapper = $('#playbarTimeTooltip');
-    this._$currentTimeTicker = $('#currentTimeTicker');
-    this._$durationTicker = $('#durationTicker');
   }
 
   // @todo unbind on class destory.
@@ -150,32 +144,10 @@ class Playbar {
     }).bind(this));
   }
 
-  _updateTickerDuration() {
-    var duration;
-    duration = this._clipEndTime - this._clipStartTime;
-    duration = utils.secondsToDisplayTime(duration);
-    this._$durationTicker.html(duration);
-  }
-
-  _initTicker() {
-    var time;
-    this._currentTimeTickerInterval = setInterval((() => {
-      this._getCurrentTime().then((time = 0) => {
-        time = Math.round(time - this._clipStartTime);
-        time = utils.secondsToDisplayTime(time);
-        this._$currentTimeTicker.html(time);
-      });
-    }).bind(this), 250);
-  }
-
   start(time) {
     var xPos;
-
     xPos = this._getPlaybarXPosFromTime(time);
     this._animateCursor(xPos);
-
-    this._initTicker();
-    this._updateTickerDuration();
   }
 
   reset(startTime, endTime) {
@@ -187,7 +159,6 @@ class Playbar {
 
   pause() {
     cancelAnimationFrame(this._animationFrameRequestId);
-    clearInterval(this._currentTimeTickerInterval);
   }
 
   onPlaybarChange(callback) {
