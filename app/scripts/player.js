@@ -152,6 +152,14 @@ class Player {
     return this._getCurrentPlayer().setVolume(volume);
   }
 
+  mute() {
+    return this._getCurrentPlayer().mute();
+  }
+
+  unMute() {
+    return this._getCurrentPlayer().unMute();
+  }
+
   getCurrentTime() {
     return this._getCurrentPlayer().getCurrentTime();
   }

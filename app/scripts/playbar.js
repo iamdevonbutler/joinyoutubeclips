@@ -83,6 +83,7 @@ class Playbar {
         xPos = left - this._getPlaybarLeftBoundXPos();
         time = this._getPlaybarTimeFromXPos(xPos);
         time = time.toFixed(1);
+        time = time < 60 ? time : utils.secondsToDisplayTime(time);
 
         this._$timeTooltipWrapper.html(time);
         this._$timeTooltipWrapper.css({

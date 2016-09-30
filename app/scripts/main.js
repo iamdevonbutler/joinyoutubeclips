@@ -31,7 +31,7 @@ var playbarOpts = {
   cursorColor: '#f12b24',
   canvasId: 'playbarCanvas',
   startTime: 0,
-  endTime: 20,
+  endTime: 10800,
   playbarHeight: 20,
 };
 
@@ -78,6 +78,8 @@ var playbarOpts = {
     playbar.onTimeRequest(::player.getCurrentTime);
     soundbar.onVolumeRequest(::player.getVolume);
     soundbar.onSetVolumeRequest(::player.setVolume);
+    soundbar.onMuteRequest(::player.mute);
+    soundbar.onUnMuteRequest(::player.unMute);
     timer.onTimeRequest(::player.getCurrentTime);
     nav.onTabChange(::player.switchPlayer);
     nav.onVideoInfoRequest(::player.getVideoInfo);

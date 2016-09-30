@@ -7,9 +7,11 @@ class Soundbar {
     this._$soundIcon;
     this._$soundbar;
 
-    this._soundbarWidth = '75';
+    this._soundbarWidth = '95';
     this._getVolumeCallback;
     this._setVolumeCallback;
+    this._unMuteVolumeCallback;
+    this._muteVolumeCallback;
 
     this._cache();
     this._bindEvents();
@@ -42,7 +44,23 @@ class Soundbar {
 
   _bindEvents() {
     this._$soundIcon.on('click', ((event) => {
-      // @todo check out mute and unmute.
+      var $el, mute;
+      $el = $(event.target);
+      mute = !!$el.hasClass('icon-mediumvolume');
+      if(mute) {
+        $el.removeClass('icon-mediumvolume').addClass('icon-mute');
+        this._$soundbar.hide();
+        if (this._muteVolumeCallback) {
+          this._muteVolumeCallback.call(null);
+        }
+      }
+      else {
+        $el.removeClass('icon-mute').addClass('icon-mediumvolume');
+        this._$soundbar.show();
+        if (this._unMuteVolumeCallback) {
+          this._unMuteVolumeCallback.call(null);
+        }
+      }
     }).bind(this));
 
     this._$soundWidget.on('click', '.soundbar', ((event) => {
@@ -75,6 +93,14 @@ class Soundbar {
 
   onSetVolumeRequest(callback) {
     this._setVolumeCallback = callback;
+  }
+
+  onMuteRequest(callback) {
+    this._muteVolumeCallback = callback;
+  }
+
+  onUnMuteRequest(callback) {
+    this._unMuteVolumeCallback = callback;
   }
 
 }

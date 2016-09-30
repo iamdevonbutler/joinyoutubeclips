@@ -9,7 +9,7 @@ function getSegmentFromData(data, id) {
 module.exports.secondsToDisplayTime = function(seconds) {
   var minutes, remainder;
   minutes = Math.floor(seconds/60);
-  seconds = seconds - minutes*60;
+  seconds = Math.floor(seconds - minutes*60);
   remainder = minutes % 60;
   seconds = seconds < 10 ? '0'+seconds: seconds;
   minutes = minutes > 60 ? Math.floor(minutes/60) + ':' + (remainder < 10 ? '0'+remainder : remainder) : minutes;
