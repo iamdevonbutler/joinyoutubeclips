@@ -1,11 +1,18 @@
 #soundWidget {
   position: absolute;
-  left: 0;
-  top: 0;
+  padding: 15px 15px 15px 0;
+  top: -15px;
+  left: 0px;
   right: 0;
   width: 100%;
   overflow: hidden;
   @include clearfix;
+
+  &:hover #soundbar,
+  &:hover #soundbarBg {
+    transform: translate3d(-35px, 0, 0);
+    transition: all .1s linear;
+  }
 
   #soundIcon {
     color: #ccc;
@@ -15,6 +22,7 @@
     top: -6px;
     float: left;
     z-index: 101;
+    width: 23px; // 35px total (w/o this it's like 34.something px)
     background-color: #000;
   }
 
@@ -22,12 +30,6 @@
     float: left;
     z-index: 100;
     position: relative;
-  }
-
-  &:hover #soundbar,
-  &:hover #soundbarBg {
-    transform: translate3d(-35px, 0, 0);
-    transition: all .1s linear;
   }
 
   #soundbar,
