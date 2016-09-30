@@ -4,9 +4,13 @@
   right: 0;
   width: 100%;
   text-align: right;
-  color: #ccc;
+  color: $lightGrey;
   font-size: 11px;
   > *:first-child::after {
     content: ' / ';
+  }
+  > * {
+    top: 1px;
+    position: relative;
   }
 }

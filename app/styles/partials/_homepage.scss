@@ -15,19 +15,15 @@
   // Playbar
   #playbarWrapper {
     float: left;
-    width: calc(100% - 100px);
-    position: relative; // for abs pos #playbarMask
-    &:hover #playbarMask {
-      transition: transform .4s;
-      transform: translateY(10px);
-    }
+    width: calc(100% - 110px);
   }
 
   // Sound and time.
   #playbarWidgetsWrapper {
     float: left;
-    width: 100px;
+    width: 110px;
     position: relative;
+    top: 2px;
   }
 
 }

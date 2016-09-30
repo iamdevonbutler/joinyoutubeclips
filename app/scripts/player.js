@@ -101,7 +101,7 @@ function switchPlayer(id, playVideo = true) {
 
   changePlayerDisplay(id);
   currentPlayer.pauseVideo();
-
+  if (nextPlayer === undefined) debugger;
   nextPlayer.getCurrentTime().then((currentTime) => {
     if (__playerChangeCallback__) {
       __playerChangeCallback__.call(null, id, currentTime);

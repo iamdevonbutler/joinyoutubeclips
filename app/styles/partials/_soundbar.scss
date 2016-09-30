@@ -1,7 +1,7 @@
 #soundWidget {
   position: absolute;
-  padding: 15px 15px 15px 0;
-  top: -15px;
+  padding: 10px 10px 0 0;
+  top: -9px;
   left: 0px;
   right: 0;
   width: 100%;
@@ -15,7 +15,7 @@
   }
 
   #soundIcon {
-    color: #ccc;
+    color: $lightGrey;
     font-size: 28px;
     padding-left: 12px;
     position: relative;
@@ -23,7 +23,7 @@
     float: left;
     z-index: 101;
     width: 23px; // 35px total (w/o this it's like 34.something px)
-    background-color: #000;
+    background-color: $black;
   }
 
   #soundbarWrapper {
@@ -35,20 +35,20 @@
   #soundbar,
   #soundbarBg {
     position: absolute;
-    width: 65px;
+    width: 75px;
     height: 10px;
     top: 0;
     left: 35px;
     z-index: 10;
-    transform: translate3d(-100px, 0, 0);
+    transform: translate3d(-110px, 0, 0);
     transition: all .1s linear;
     transition-delay: .25s;
   }
   #soundbarBg {
-    background-color: #232323;
+    background-color: $darkGrey;
   }
   #soundbar {
-    background-color: #f12b24;
+    background-color: $red;
     z-index: 100;
   }
 

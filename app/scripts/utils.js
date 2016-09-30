@@ -11,10 +11,8 @@ module.exports.secondsToDisplayTime = function(seconds) {
   minutes = Math.floor(seconds/60);
   seconds = seconds - minutes*60;
   remainder = minutes % 60;
-  debugger;
   seconds = seconds < 10 ? '0'+seconds: seconds;
   minutes = minutes > 60 ? Math.floor(minutes/60) + ':' + (remainder < 10 ? '0'+remainder : remainder) : minutes;
-  console.log(minutes);
   return `${minutes}:${seconds}`;
 }
 

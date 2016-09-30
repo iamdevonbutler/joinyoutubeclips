@@ -6,22 +6,22 @@
     margin-bottom: 15px;
     &.active #navItemTitle,
     &.active #linkIcon {
-      color: #ccc;
+      color: $lightGrey;
     }
     &:hover {
       cursor: pointer;
     }
     #navItemTitle {
-      color: #333;
+      color: $grey;
       font-size: 14px;
     }
     #linkIcon {
-      color: #333;
       font-size: 24px;
       margin-left: 10px;
       margin-right: 25px;
       position: relative;
       top: 10px;
+      color: $grey;
     }
     #navItemTitle,
     #navItemClipsWrapper {
@@ -31,11 +31,11 @@
       margin-left: 10px;
       display: inline-block;
       font-size: 13px;
-      background-color: #1f1f1f;
+      background-color: $darkestGrey;
       padding: 6px 10px;
-      color: #555;
+      color: $grey;
       &.active {
-        color: #ccc;
+        color: $lightGrey;
       }
       &:first-child {
         margin-left: 0;

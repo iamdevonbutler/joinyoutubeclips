@@ -7,6 +7,7 @@ class Soundbar {
     this._$soundIcon;
     this._$soundbar;
 
+    this._soundbarWidth = '75';
     this._getVolumeCallback;
     this._setVolumeCallback;
 
@@ -45,13 +46,12 @@ class Soundbar {
     }).bind(this));
 
     this._$soundWidget.on('click', '.soundbar', ((event) => {
-      var leftXPos, mouseXPos, widgetWidth, volumePercentage, width, volume = 100;
+      var leftXPos, mouseXPos, volumePercentage, width, volume = 100;
 
       leftXPos = this._$soundbar[0].getBoundingClientRect().left;
       mouseXPos = event.pageX;
-      widgetWidth = '65';
-      volumePercentage = (mouseXPos - leftXPos) / widgetWidth;
-      width = (widgetWidth * volumePercentage) + 'px';
+      volumePercentage = (mouseXPos - leftXPos) / this._soundbarWidth;
+      width = (this._soundbarWidth * volumePercentage) + 'px';
       volume = Math.round(volume * volumePercentage);
 
       this._$soundbar.css('width', width);
@@ -63,7 +63,7 @@ class Soundbar {
   syncVolume() {
     this._getVolume().then(((volume) => {
       var width;
-      width = (volume / 100) * 65;
+      width = (volume / 100) * this._soundbarWidth;
       width = width + 'px';
       this._$soundbar.css('width', width);
     }).bind(this));
