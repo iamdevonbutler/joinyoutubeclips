@@ -46,9 +46,9 @@ function changeTab($el) {
 }
 
 function bindEvents() {
-  $navWrapper.on('click', ['.navItem', '#navItemTitle'], (e) => {
+  $navWrapper.on('click', '.navItem, #navItemTitle', (event) => {
     var $el;
-    $el = $(e.target);
+    $el = $(event.target);
     if (__tabChangeCallback__) {
       let id = $el.attr('data-id');
       __tabChangeCallback__.call(null, id);
