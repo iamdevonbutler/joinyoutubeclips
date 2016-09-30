@@ -5,18 +5,15 @@
  * data from URL for text to display inbtw videos (single param to include generic inbtw text).
  * unbinding (not needed for this use case but necessary for webapps and such).
  * error handling for player requests, e.g. getPlayerData & getVideoUrl.
- *
- * make nav items a little bit smaller - maybe.
- * sound bar.
+ * sound mute/click thing
  * name 'clips' or 'videos' - ask corey.
  * cross browser testing.
  * docs page is github page.
- * abstract out time widget.
  * edit / create new page.
  * onHover u can position things ontop of the video and hide them like the top right icons in the player do by default.
  */
 const nav = require('./nav');
-const player = require('./player');
+const Player = require('./player');
 const Playbar = require('./playbar');
 const Soundbar = require('./soundbar');
 const utils = require('./utils');
@@ -46,6 +43,11 @@ var playbarOpts = {
     // const data = utils.getPlayerData(window.location);
 
     /**
+     * Init player.
+     */
+    var player = new Player(data);
+
+    /**
      * Init playbar.
      */
     var playbar = new Playbar(playbarOpts);
@@ -66,13 +68,13 @@ var playbarOpts = {
     /**
      * Register events.
      */
-    playbar.onPlaybarChange(player.seekTo);
-    playbar.onTimeRequest(player.getCurrentTime);
-    soundbar.onVolumeRequest(player.getVolume);
-    soundbar.onSetVolumeRequest(player.setVolume);
-    timer.onTimeRequest(player.getCurrentTime);
-    nav.onTabChange(player.switchPlayer);
-    nav.onVideoInfoRequest(player.getVideoInfo);
+    playbar.onPlaybarChange(::player.seekTo);
+    playbar.onTimeRequest(::player.getCurrentTime);
+    soundbar.onVolumeRequest(::player.getVolume);
+    soundbar.onSetVolumeRequest(::player.setVolume);
+    timer.onTimeRequest(::player.getCurrentTime);
+    nav.onTabChange(::player.switchPlayer);
+    nav.onVideoInfoRequest(::player.getVideoInfo);
 
     player.onPlay((id, time) => {
       playbar.start(time);
