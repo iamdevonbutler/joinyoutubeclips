@@ -54,10 +54,15 @@ class Playbar {
 
   // @todo unbind on class destory.
   _bindEvents() {
-    var $window;
+    var $window, $document;
     $window = $(window);
+    $document = $(document);
 
     $window.on('resize', ((event) => {
+      this._initCanvas();
+    }).bind(this));
+
+    $document.on('webkitfullscreenchange mozfullscreenchange fullscreenchange', ((event) => {
       this._initCanvas();
     }).bind(this));
 

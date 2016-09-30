@@ -1,8 +1,8 @@
 {
-  "name": "civarro-website",
+  "name": "joinyoutubeclips",
   "version": "0.1.0",
-  "description": "Website for civarro and sons roofing",
-  "repository": "iamdevonbutler/civarro-website",
+  "description": "Join YouTube Clips!",
+  "repository": "iamdevonbutler/joinyoutubeclips",
   "engines": {
     "node": ">=4"
   },

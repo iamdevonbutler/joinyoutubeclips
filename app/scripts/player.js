@@ -6,7 +6,7 @@ class Player {
 
   constructor(data) {
     this._data = data;
-    this._$playerWrapper;
+    this._$player;
     this._activeId = '0.0';
     this._players = [];
 
@@ -17,7 +17,7 @@ class Player {
   }
 
   _cache() {
-    this._$playerWrapper = $('#playerWrapper');
+    this._$player = $('#player');
   }
 
   _addPlayer(id, vid, active = false) {
@@ -27,14 +27,15 @@ class Player {
     item = `<li data-id="${id}" ${active ? 'class="active"' : ''}><div></div></li>`;
 
     // Add item to DOM.
-    this._$playerWrapper.append(item);
-    el = this._$playerWrapper.children().last().children()[0];
+    this._$player.append(item);
+    el = this._$player.children().last().children()[0];
 
     this._players[id] = YT(el, {
       videoId: vid,
       playerVars: {
         autoplay: 0,
         controls: 0,
+        // fs: 0,
         start: startTime,
         end: endTime,
       }
@@ -81,13 +82,13 @@ class Player {
   }
 
   _getVideoById(id) {
-    return this._$playerWrapper.find(`> [data-id="${id}"]`);
+    return this._$player.find(`> [data-id="${id}"]`);
   }
 
   _changePlayerDisplay(id) {
     var $el;
     $el = this._getVideoById(id);
-    this._$playerWrapper.children().removeClass('active');
+    this._$player.children().removeClass('active');
     $el.addClass('active');
   }
 

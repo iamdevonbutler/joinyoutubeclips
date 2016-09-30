@@ -5,12 +5,9 @@
  * data from URL for text to display inbtw videos (single param to include generic inbtw text).
  * unbinding (not needed for this use case but necessary for webapps and such).
  * error handling for player requests, e.g. getPlayerData & getVideoUrl.
- * sound mute/click thing
- * name 'clips' or 'videos' - ask corey.
  * cross browser testing.
  * docs page is github page.
  * edit / create new page.
- * onHover u can position things ontop of the video and hide them like the top right icons in the player do by default.
  */
 const Nav = require('./nav');
 const Player = require('./player');
@@ -27,21 +24,17 @@ var data = [
   {vid: 'glWKKOro8QU', segments: [[0, 5], [100, 105]]},
 ];
 
-var playbarOpts = {
-  cursorColor: '#f12b24',
-  canvasId: 'playbarCanvas',
-  startTime: 0,
-  endTime: 10800,
-  playbarHeight: 20,
-};
 
-(($) => {
+;(($) => {
 
   $(document).ready(function() {
     /**
      * Get data from URL.
      */
     // const data = utils.getPlayerData(window.location);
+    var startTime, endTime;
+    startTime = data[0].segments[0][0];
+    endTime = data[0].segments[0][1];
 
     /**
      * Init player.
@@ -56,7 +49,11 @@ var playbarOpts = {
     /**
      * Init playbar.
      */
-    var playbar = new Playbar(playbarOpts);
+    var playbar = new Playbar({
+      canvasId: 'playbarCanvas',
+      startTime: startTime,
+      endTime: endTime,
+    });
 
     /**
      * Init soundbar.
@@ -67,8 +64,8 @@ var playbarOpts = {
      * Init timer.
      */
     var timer = new Timer({
-      startTime: playbarOpts.startTime,
-      endTime: playbarOpts.endTime,
+      startTime: startTime,
+      endTime: endTime,
     });
 
     /**
@@ -116,16 +113,15 @@ var playbarOpts = {
      */
     soundbar.syncVolume();
 
-
     /**
      * Fullscreen mode.
      */
-    // const target = $('#homepage')[0];
-    // $(document).on('click', () => {
-    //   if (screenfull.enabled) {
-    //     screenfull.request(target);
-    //   }
-    // });
+    $('#fullscreen').on('click', () => {
+      const target = $('#playerShell')[0];
+      if (screenfull.enabled) {
+        screenfull.request(target);
+      }
+    });
 
   });
 

@@ -11,6 +11,9 @@
     &:hover {
       cursor: pointer;
     }
+    *:hover {
+      color: $lightGrey !important;
+    }
     #navItemTitle {
       color: $grey;
       font-size: 14px;

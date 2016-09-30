@@ -11,7 +11,7 @@
   &:hover #soundbar,
   &:hover #soundbarBg {
     transform: translate3d(-35px, 0, 0);
-    transition: all .1s linear;
+    transition: all .13s linear;
   }
 
   #soundIcon {
@@ -29,7 +29,6 @@
 
   #soundbarWrapper {
     float: left;
-    z-index: 100;
     position: relative;
   }
 
@@ -40,13 +39,13 @@
     height: 10px;
     top: 0;
     left: 35px;
-    z-index: 10;
-    transform: translate3d(-130px, 0, 0);
-    transition: all .1s linear;
+    transform: translate3d(-200px, 0, 0);
+    transition: all .13s linear;
     transition-delay: .25s;
   }
   #soundbarBg {
     background-color: $darkGrey;
+    z-index: 90;
   }
   #soundbar {
     background-color: $red;

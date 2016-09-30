@@ -1,18 +1,19 @@
 <div id="homepage">
 
-  <ul id="playerWrapper"></ul>
+  <span id="fullscreen" class="icon icon-fullscreen"></span>
 
-  <div id="playerFooter">
+  <div id="playerShell">
+    <ul id="player"></ul>
+    <div id="playerFooter">
+      <div id="playbarWrapper">
+        @@include('./playbar.html')
+      </div>
 
-    <div id="playbarWrapper">
-      @@include('./playbar.html')
+      <div id="playbarWidgetsWrapper">
+        @@include('./soundWidget.html')
+        @@include('./timeWidget.html')
+      </div>
     </div>
-
-    <div id="playbarWidgetsWrapper">
-      @@include('./soundWidget.html')
-      @@include('./timeWidget.html')
-    </div>
-
   </div>
 
   <ul id="navWrapper"></ul>
