@@ -12,12 +12,13 @@
  * edit / create new page.
  * onHover u can position things ontop of the video and hide them like the top right icons in the player do by default.
  */
-const nav = require('./nav');
+const Nav = require('./nav');
 const Player = require('./player');
 const Playbar = require('./playbar');
 const Soundbar = require('./soundbar');
-const utils = require('./utils');
 const Timer = require('./timer');
+
+const utils = require('./utils');
 const screenfull = require('screenfull');
 
 // @todo might be a good idea to add the video title to this object.
@@ -46,6 +47,11 @@ var playbarOpts = {
      * Init player.
      */
     var player = new Player(data);
+
+    /**
+     * Init nav.
+     */
+    var nav = new Nav(data);
 
     /**
      * Init playbar.

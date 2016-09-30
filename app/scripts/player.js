@@ -64,7 +64,7 @@ class Player {
 
       if (ended) {
         const nextId = utils.getNextIdFromData(this._data, id);
-        this._switchPlayer(nextId || '0.0', !!nextId);
+        this.switchPlayer(nextId || '0.0', !!nextId);
       }
     }).bind(this));
   }
