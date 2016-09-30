@@ -25,7 +25,7 @@ const screenfull = require('screenfull');
 
 // @todo might be a good idea to add the video title to this object.
 var data = [
-  {vid: 'Qa4uI_50Bmk', segments: [[0, 20], [100, 105]]},
+  {vid: 'W77h1Gf8wZg', segments: [[0, 10800]]},
   {vid: 'glWKKOro8QU', segments: [[0, 5], [100, 105]]},
 ];
 
