@@ -119,7 +119,7 @@ var data = [
     /**
      * Fullscreen mode.
      */
-    $('#fullscreen').on('click', () => {
+    $('#fullscreenIcon').on('click', () => {
       const target = $('#playerShell')[0];
       if (screenfull.enabled) {
         screenfull.request(target);
