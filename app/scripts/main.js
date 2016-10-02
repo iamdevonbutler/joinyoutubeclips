@@ -8,6 +8,9 @@
  * cross browser testing.
  * docs page is github page.
  * edit / create new page.
+ * soundwidget name to volumewidget
+ * change homepage to playerPage
+ * fullscreen should be fyull white not ccc
  */
 const Nav = require('./nav');
 const Player = require('./player');

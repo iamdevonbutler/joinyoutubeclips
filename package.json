@@ -1,7 +1,7 @@
 {
   "name": "joinyoutubeclips",
   "version": "0.1.0",
-  "description": "Join YouTube Clips!",
+  "description": "Join YouTube Clips",
   "repository": "iamdevonbutler/joinyoutubeclips",
   "engines": {
     "node": ">=4"

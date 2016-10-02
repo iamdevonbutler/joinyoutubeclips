@@ -1,35 +1,46 @@
 #soundWidget {
-  position: absolute;
-  padding: 10px 10px 0 0;
-  top: -9px;
-  left: 0px;
-  right: 0;
-  width: 100%;
-  overflow: hidden;
   @include clearfix;
-
-  &:hover #soundbar,
-  &:hover #soundbarBg {
-    transform: translate3d(-35px, 0, 0);
-    transition: all .13s linear;
-  }
+  position: relative;
+  padding-left: 35px;
 
   #soundIcon {
-    color: $lightGrey;
-    font-size: 28px;
+    margin-left: -35px;
+    float: left;
+    position: relative;
+    width: 23px; // 35px total (w/o this it's like 34.something px)
     padding-left: 10px;
     padding-right: 2px;
-    position: relative;
     top: -6px;
-    float: left;
-    z-index: 101;
-    width: 23px; // 35px total (w/o this it's like 34.something px)
     background-color: $black;
+    color: $lightGrey;
+    font-size: 28px;
+    z-index: 101;
+    &:hover {
+      + #soundbarWrapper > * {
+        transform: translate3d(0, 0, 0);
+        transition: all .13s linear;
+      }
+    }
   }
 
   #soundbarWrapper {
     float: left;
     position: relative;
+    width: 95px;
+    z-index: 1;
+    overflow: hidden;
+    height: 10px;
+    > #soundbarWrapper1 {
+      transform: translate3d(-100px, 0, 0);
+      transition: all .13s linear;
+      transition-delay: .6s;
+      &:hover {
+        transform: translate3d(0, 0, 0);
+      }
+      &:hover ~ * {
+        transform: translate3d(0, 0, 0);
+      }
+    }
   }
 
   #soundbar,
@@ -38,10 +49,7 @@
     width: 95px;
     height: 10px;
     top: 0;
-    left: 35px;
-    transform: translate3d(-200px, 0, 0);
-    transition: all .13s linear;
-    transition-delay: .25s;
+    left: 0;
   }
   #soundbarBg {
     background-color: $darkGrey;
