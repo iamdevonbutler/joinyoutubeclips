@@ -10,7 +10,7 @@
  * edit / create new page.
  * soundwidget name to volumewidget
  * change homepage to playerPage
- * fullscreen should be fyull white not ccc
+ * fullscreen should be fyull white not ccs
  */
 const Nav = require('./nav');
 const Player = require('./player');
@@ -28,7 +28,7 @@ var data = [
 ];
 
 
-;(($) => {
+(($) => {
 
   $(document).ready(function() {
     /**
@@ -40,32 +40,18 @@ var data = [
     endTime = data[0].segments[0][1];
 
     /**
-     * Init player.
+     * Instanciate objects.
      */
     var player = new Player(data);
-
-    /**
-     * Init nav.
-     */
     var nav = new Nav(data);
+    var soundbar = new Soundbar();
 
-    /**
-     * Init playbar.
-     */
     var playbar = new Playbar({
       canvasId: 'playbarCanvas',
       startTime: startTime,
       endTime: endTime,
     });
 
-    /**
-     * Init soundbar.
-     */
-    var soundbar = new Soundbar();
-
-    /**
-     * Init timer.
-     */
     var timer = new Timer({
       startTime: startTime,
       endTime: endTime,
@@ -102,13 +88,9 @@ var data = [
     });
 
     /**
-     * Init player.
+     * Init objects.
      */
     player.init(data);
-
-    /**
-     * Init nav.
-     */
     nav.init(data);
 
     /**
