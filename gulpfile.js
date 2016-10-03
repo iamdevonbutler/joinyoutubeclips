@@ -7,6 +7,7 @@ const del = require('del');
 const browserify = require('browserify');
 const babelify = require('babelify');
 const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
 
 const $ = gulpLoadPlugins();
 const runSequence = require('run-sequence');
@@ -17,11 +18,8 @@ const iconFontCss = require('gulp-iconfont-css');
 const fileinclude = require('gulp-file-include');
 const favicons = require('gulp-favicons');
 
-const preBuildTasks = ['lint', 'images', 'styles', 'scripts', 'fonts', 'extras', 'favicon', 'iconfont'];
-
-// remove useref.
-// remove tmp.
-// need to shrink assets via cmd line flag.
+const fullBoot = gutil.env.full;
+var skinny = gutil.env.skinny; // compress stuff...
 
 gulp.task('favicon', function () {
   return gulp.src('app/favicon.png').pipe(favicons({
@@ -73,6 +71,7 @@ gulp.task('styles', () => {
       includePaths: ['.']
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer({browsers: ['> 1%', 'last 2 versions', 'Firefox ESR']}))
+    .pipe($.if(skinny, $.cssnano()))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('dist/styles'));
 });
@@ -87,6 +86,8 @@ gulp.task('scripts', () => {
       this.emit('end');
     })
     .pipe(source('main.js'))
+    .pipe($.if(skinny, buffer()))
+    .pipe($.if(skinny, $.uglify()))
     .pipe(gulp.dest('dist/scripts'));
 });
 
@@ -106,13 +107,13 @@ gulp.task('html', () => {
       prefix: '@@',
       basepath: '@file'
     }))
-    .pipe($.htmlmin({collapseWhitespace: true}))
+    .pipe($.if(skinny, $.htmlmin({collapseWhitespace: true})))
     .pipe(gulp.dest('dist'));
 });
 
 gulp.task('images', () => {
   return gulp.src('app/images/**/*')
-    .pipe($.cache($.imagemin()))
+    .pipe($.if(skinny, $.cache($.imagemin())))
     .pipe(gulp.dest('dist/images'));
 });
 
@@ -162,7 +163,8 @@ gulp.task('serve', () => {
 gulp.task('build', ['clean', 'lint'], () => {
   const preBuildTasks = ['images', 'styles', 'scripts', 'fonts', 'extras', 'favicon', 'iconfont'];
   runSequence(preBuildTasks, 'html', () => {
-    return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
+    return gulp.src('dist/**/*')
+      .pipe($.size({title: 'build', gzip: true}));
   });
 });
 
@@ -172,8 +174,8 @@ gulp.task('deploy', ['build'], () => {
     .pipe($.clean());
 });
 
-gulp.task('default', ['clean', 'lint'], () => {
-  const preServeTasks = ['images', 'styles', 'scripts', 'fonts', 'extras'];
+gulp.task('default', fullBoot ? ['clean', 'lint'] : ['lint'], () => {
+  const preServeTasks = ['images', 'styles', 'scripts', 'fonts', 'extras'].concat(fullBoot ? ['favicon', 'iconfont'] : []);
   runSequence(preServeTasks, 'html', () => {
     gulp.start('serve');
   });
