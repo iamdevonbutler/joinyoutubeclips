@@ -35,7 +35,7 @@ class Player {
       playerVars: {
         autoplay: 0,
         controls: 0,
-        // fs: 0,
+        fs: 0,
         start: startTime,
         end: endTime,
       }

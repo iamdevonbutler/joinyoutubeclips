@@ -3,7 +3,6 @@ const gutil = require('gulp-util');
 const gulpLoadPlugins = require('gulp-load-plugins');
 const browserSync = require('browser-sync');
 const del = require('del');
-const wiredep = require('wiredep').stream;
 
 const browserify = require('browserify');
 const babelify = require('babelify');
@@ -17,13 +16,18 @@ const iconFont = require('gulp-iconfont');
 const iconFontCss = require('gulp-iconfont-css');
 const fileinclude = require('gulp-file-include');
 const favicons = require('gulp-favicons');
-const bootstrapTasks = ['lint', 'iconfont', 'images', 'fonts', 'extras', 'favicon', 'html'];
+
+const preBuildTasks = ['lint', 'images', 'styles', 'scripts', 'fonts', 'extras', 'favicon', 'iconfont'];
+
+// remove useref.
+// remove tmp.
+// need to shrink assets via cmd line flag.
 
 gulp.task('favicon', function () {
   return gulp.src('app/favicon.png').pipe(favicons({
     appName: 'joinYouTubeClips',
     appDescription: 'www.joinyoutubeclips.com',
-    developerName: 'Jason Pescione <jpescione@gmail.com>',
+    developerName: 'Jay Pescione <jpescione@gmail.com>',
     developerURL: 'https://github.com/iamdevonbutler',
     background: 'transparent',
     path: '/favicons/',
@@ -39,25 +43,24 @@ gulp.task('favicon', function () {
     replace: true
   }))
   .on('error', gutil.log)
-  .pipe(gulp.dest('.tmp/favicons'))
   .pipe(gulp.dest('dist/favicons'));
 });
 
+// weird thing...iconFontCss wants the _icons.scss file to already exist.
 gulp.task('iconfont', function(){
   var fontName = 'Icons';
-  gulp.src(['app/icons/*.svg'])
+  gulp.src(['app/icons/*.svg'], {base: 'app'})
     .pipe(iconFontCss({
       base: 'app',
       fontName: fontName,
-      targetPath: '../../../app/styles/vendor/_icons.scss',
-      fontPath: '../fonts/icons/'
+      targetPath: '../../app/styles/vendor/_icons.scss',
+      fontPath: '../icons/',
     }))
     .pipe(iconFont({
       fontName: fontName,
       normalize: true,
      }))
-    .pipe(gulp.dest('.tmp/fonts/icons'))
-    .pipe(gulp.dest('dist/fonts/icons'));
+    .pipe(gulp.dest('dist/icons'));
 });
 
 gulp.task('styles', () => {
@@ -71,8 +74,7 @@ gulp.task('styles', () => {
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer({browsers: ['> 1%', 'last 2 versions', 'Firefox ESR']}))
     .pipe($.sourcemaps.write())
-    .pipe(gulp.dest('.tmp/styles'))
-    .pipe(reload({stream: true}));
+    .pipe(gulp.dest('dist/styles'));
 });
 
 gulp.task('scripts', () => {
@@ -85,13 +87,11 @@ gulp.task('scripts', () => {
       this.emit('end');
     })
     .pipe(source('main.js'))
-    .pipe(gulp.dest('.tmp/scripts'))
-    .pipe(reload({stream: true}));
+    .pipe(gulp.dest('dist/scripts'));
 });
 
 function lint(files, options) {
   return gulp.src(files)
-    .pipe(reload({stream: true, once: true}))
     .pipe($.eslint(options))
     .pipe($.if(!browserSync.active, $.eslint.failAfterError()));
 }
@@ -99,34 +99,15 @@ function lint(files, options) {
 gulp.task('lint', () => {
   return lint('app/scripts/**/*.js');
 });
-gulp.task('lint:test', () => {
-  return lint('test/spec/**/*.js', {
-    env: {
-      mocha: true
-    }
-  });
-});
 
-gulp.task('html', (callback) => {
-  runSequence(// 'favicon',
-              ['scripts', 'styles'],
-              '_html',
-              callback);
-});
-
-gulp.task('_html', () => {
+gulp.task('html', () => {
   return gulp.src('app/*.html')
     .pipe(fileinclude({
       prefix: '@@',
       basepath: '@file'
     }))
-    .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
-    // .pipe($.if('*.js', $.uglify()))
-    .pipe($.if('*.css', $.cssnano({safe: true, autoprefixer: false})))
-    .pipe($.if('*.html', $.htmlmin({collapseWhitespace: true})))
-    .pipe(gulp.dest('.tmp'))
-    .pipe(gulp.dest('dist'))
-    .pipe(reload({stream: true}));
+    .pipe($.htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('images', () => {
@@ -136,9 +117,7 @@ gulp.task('images', () => {
 });
 
 gulp.task('fonts', () => {
-  return gulp.src(require('main-bower-files')('**/*.{eot,svg,ttf,woff,woff2}', function (err) {})
-    .concat('app/fonts/**/*'))
-    .pipe(gulp.dest('.tmp/fonts'))
+  return gulp.src('app/fonts/**/*')
     .pipe(gulp.dest('dist/fonts'));
 });
 
@@ -146,86 +125,45 @@ gulp.task('extras', () => {
   return gulp.src([
     'app/*.*',
     'app/CNAME',
+    'app/LICENSE',
+    'app/robots.txt',
     '!app/*.html'
   ], {
     dot: true
   }).pipe(gulp.dest('dist'));
 });
 
-gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
+gulp.task('clean', del.bind(null, ['dist']));
 
-gulp.task('serve', bootstrapTasks, () => {
+gulp.task('serve', () => {
   browserSync({
     notify: false,
     port: 9000,
     server: {
-      baseDir: ['.tmp', 'app'],
-      routes: {
-        '/bower_components': 'bower_components'
-      }
+      baseDir: ['dist'],
     }
   });
 
   gulp.watch([
-    'app/images/**/*',
-    '.tmp/fonts/**/*'
+    'dist/**/*',
   ]).on('change', reload);
 
-  gulp.watch('app/**/*.html', ['_html']);
+  gulp.watch('app/**/*.html', ['html']);
+  gulp.watch('app/images/**/*', ['images']);
+  gulp.watch('app/fonts/**/*', ['fonts']);
   gulp.watch('app/styles/**/*.scss', ['styles']);
   gulp.watch('app/scripts/**/*.js', ['scripts']);
-  gulp.watch('app/fonts/**/*', ['fonts']);
   gulp.watch('app/icons/**/*', ['iconfont']);
+  gulp.watch('app/styles/vendor/_icons.scss', ['styles']);
   gulp.watch('app/favicon.png', ['favicon']);
-  gulp.watch('bower.json', ['wiredep', 'fonts']);
+  gulp.watch('app/html/favicons.html', ['html']);
 });
 
-gulp.task('serve:dist', () => {
-  browserSync({
-    notify: false,
-    port: 9000,
-    server: {
-      baseDir: ['dist']
-    }
+gulp.task('build', ['clean', 'lint'], () => {
+  const preBuildTasks = ['images', 'styles', 'scripts', 'fonts', 'extras', 'favicon', 'iconfont'];
+  runSequence(preBuildTasks, 'html', () => {
+    return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
   });
-});
-
-gulp.task('serve:test', ['scripts'], () => {
-  browserSync({
-    notify: false,
-    port: 9000,
-    ui: false,
-    server: {
-      baseDir: 'test',
-      routes: {
-        '/scripts': '.tmp/scripts',
-        '/bower_components': 'bower_components'
-      }
-    }
-  });
-
-  gulp.watch('app/scripts/**/*.js', ['scripts']);
-  gulp.watch('test/spec/**/*.js').on('change', reload);
-  gulp.watch('test/spec/**/*.js', ['lint:test']);
-});
-
-// inject bower components
-gulp.task('wiredep', () => {
-  gulp.src('app/styles/*.scss')
-    .pipe(wiredep({
-      ignorePath: /^(\.\.\/)+/
-    }))
-    .pipe(gulp.dest('app/styles'));
-
-  gulp.src('app/*.html')
-    .pipe(wiredep({
-      ignorePath: /^(\.\.\/)*\.\./
-    }))
-    .pipe(gulp.dest('app'));
-});
-
-gulp.task('build', bootstrapTasks, () => {
-  return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
 gulp.task('deploy', ['build'], () => {
@@ -234,6 +172,9 @@ gulp.task('deploy', ['build'], () => {
     .pipe($.clean());
 });
 
-gulp.task('default', ['clean'], () => {
-  gulp.start('serve');
+gulp.task('default', ['clean', 'lint'], () => {
+  const preServeTasks = ['images', 'styles', 'scripts', 'fonts', 'extras'];
+  runSequence(preServeTasks, 'html', () => {
+    gulp.start('serve');
+  });
 });

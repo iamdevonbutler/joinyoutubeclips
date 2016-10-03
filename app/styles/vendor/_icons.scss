@@ -1,11 +1,11 @@
 @font-face {
 	font-family: "Icons";
-	src: url('../fonts/icons/Icons.eot');
-	src: url('../fonts/icons/Icons.eot?#iefix') format('eot'),
-		url('../fonts/icons/Icons.woff2') format('woff2'),
-		url('../fonts/icons/Icons.woff') format('woff'),
-		url('../fonts/icons/Icons.ttf') format('truetype'),
-		url('../fonts/icons/Icons.svg#Icons') format('svg');
+	src: url('../icons/Icons.eot');
+	src: url('../icons/Icons.eot?#iefix') format('eot'),
+		url('../icons/Icons.woff2') format('woff2'),
+		url('../icons/Icons.woff') format('woff'),
+		url('../icons/Icons.ttf') format('truetype'),
+		url('../icons/Icons.svg#Icons') format('svg');
 }
 
 .icon:before {
@@ -21,38 +21,18 @@
 }
 
 
-.icon-add:before {
+.icon-fullscreen:before {
 	content: "\E001";
 }
 
-.icon-edit:before {
+.icon-link:before {
 	content: "\E002";
 }
 
-.icon-exitfullscreen:before {
+.icon-mediumvolume:before {
 	content: "\E003";
 }
 
-.icon-fullscreen:before {
-	content: "\E004";
-}
-
-.icon-highvolume:before {
-	content: "\E005";
-}
-
-.icon-link:before {
-	content: "\E006";
-}
-
-.icon-lowvolume:before {
-	content: "\E007";
-}
-
-.icon-mediumvolume:before {
-	content: "\E008";
-}
-
 .icon-mute:before {
-	content: "\E009";
+	content: "\E004";
 }
