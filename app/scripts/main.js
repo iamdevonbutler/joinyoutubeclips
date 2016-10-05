@@ -11,6 +11,10 @@
  * soundwidget name to volumewidget
  * change homepage to playerPage
  * fullscreen should be fyull white not ccs
+ * mobile
+ * default page w/o url params.
+ * prob make it iframeable w/ overlays for content.
+ * probably do some kinda nav thing overlay and replace the ugly boxes.
  */
 const Nav = require('./nav');
 const Player = require('./player');
@@ -21,6 +25,7 @@ const Timer = require('./timer');
 const utils = require('./utils');
 const screenfull = require('screenfull');
 
+// ?W77h1Gf8wZg=0-10,10-20
 // @todo might be a good idea to add the video title to this object.
 var data = [
   {vid: 'W77h1Gf8wZg', segments: [[0, 10800]]},
@@ -31,16 +36,18 @@ var data = [
 (($) => {
 
   $(document).ready(function() {
-    /**
-     * Get data from URL.
-     */
-    // const data = utils.getPlayerData(window.location);
     var startTime, endTime;
     startTime = data[0].segments[0][0];
     endTime = data[0].segments[0][1];
 
     /**
-     * Instanciate objects.
+    * Get data from URL.
+    */
+    data = utils.getPlayerData(window.location.search);
+    console.log(data);
+
+    /**
+     * Instantiate objects.
      */
     var player = new Player(data);
     var nav = new Nav(data);

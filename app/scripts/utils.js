@@ -17,7 +17,18 @@ module.exports.secondsToDisplayTime = function(seconds) {
 }
 
 module.exports.getPlayerData = (query) => {
-  return queryString.parse(query);
+  var parsed, data;
+  parsed = queryString.parse(query);
+  data = Object.keys(parsed).map((vid) => {
+    var segments;
+    segments = Array.isArray(parsed[vid]) ? [...new Set(parsed[vid].join(',').split(','))] : parsed[vid].split(',');
+    segments = segments.map(time => time.split('-'));
+    return {
+      vid,
+      segments,
+    };
+  });
+  return data;
 }
 
 module.exports.getSegmentFromData = getSegmentFromData;
