@@ -19,6 +19,6 @@
     }
   }
   &.pause + #soundWidget {
-    margin-left: 16px !important; // 
+    margin-left: 16px !important; // little hack, the displaying the pause btn pushes soundWidget to the right. this counteracts that.
   }
 }

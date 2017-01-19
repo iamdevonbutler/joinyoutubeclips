@@ -1,20 +1,42 @@
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.92);
+  &.hide {
+    display: none;
+  }
+  #closeIcon {
+    color: $iconColor;
+    font-size: 38px;
+    display: block;
+    position: absolute;
+    top: 35px;
+    left: 35px;
+    cursor: pointer;
+    padding: 10px;
+  }
+  .hide {
+    display: none;
+  }
+}
+
 #navWrapper {
-
-
-
-
   display: block;
-
-
-
   max-width: 1000px;
   margin: 0 auto;
-  margin-bottom: 80px;
+  padding-top: 100px;
   > li {
-    margin-bottom: 15px;
+    margin-bottom: 30px;
+    text-align: center;
     &.active #navItemTitle,
     &.active #linkIcon {
-      color: $lightGrey;
+      color: $iconColor;
+
     }
     &:hover {
       cursor: pointer;
@@ -24,7 +46,8 @@
     }
     #navItemTitle {
       color: $grey;
-      font-size: 14px;
+      font-size: 18px;
+      cursor: pointer;
     }
     #linkIcon {
       font-size: 24px;
@@ -33,20 +56,22 @@
       position: relative;
       top: 10px;
       color: $grey;
+      cursor: pointer;
     }
     #navItemTitle,
     #navItemClipsWrapper {
       display: inline-block;
     }
     #navItemClipsWrapper > li {
+      cursor: pointer;
       margin-left: 10px;
       display: inline-block;
-      font-size: 13px;
-      background-color: $darkestGrey;
+      font-size: 16px;
+      background-color: $darkGrey;
       padding: 6px 10px;
       color: $grey;
       &.active {
-        color: $lightGrey;
+        color: $iconColor;
       }
       &:first-child {
         margin-left: 0;

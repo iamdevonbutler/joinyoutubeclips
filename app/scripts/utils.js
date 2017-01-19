@@ -18,6 +18,18 @@ function filterArrayDupes(array) {
   return [...set];
 }
 
+module.exports.getInitialTimeRange = function(data) {
+  var startTime, endTime;
+  if (!data) {
+    startTime = 0;
+    // endTime = player.getDuration
+  }
+  else {
+
+  }
+  return {startTime, endTime};
+}
+
 // @todo hours...
 module.exports.secondsToDisplayTime = function(seconds) {
   var minutes, hoursAndMinutes, remainder;

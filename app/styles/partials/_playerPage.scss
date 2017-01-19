@@ -13,7 +13,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    width: calc(100% - 100px);
+    width: calc(100% - 60px);
     margin: 0 auto;
     z-index: 1000;
     @include clearfix;
@@ -42,6 +42,27 @@
     > #timeWidget {
       margin-left: 5px;
       top: 10px;
+    }
+    > .right {
+      float: right;
+      position: relative;
+      top: 4px;
+      @include clearfix;
+      > * {
+        float: left;
+        display: block;
+        color: $iconColor;
+        cursor: pointer;
+      }
+      > #menuIcon {
+        font-size: 35px;
+        position: relative;
+        top: -1px;
+      }
+      > #fullscreen {
+        margin-left: 20px;
+        font-size: 30px;
+      }
     }
 
   }

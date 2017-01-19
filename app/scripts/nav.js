@@ -5,11 +5,15 @@ class Nav {
   constructor(data) {
     this._data = data;
     this._$navWrapper;
+    this._$overlay;
     this._tabChangeCallback;
     this._getVideoInfoCallback;
   }
 
   _cache() {
+    this._$overlay = $('#overlay');
+    this._$closeIcon = $('#closeIcon');
+    this._$menuIcon = $('#menuIcon');
     this._$navWrapper = $('#navWrapper');
   }
 
@@ -61,6 +65,14 @@ class Nav {
         let id = $el.attr('data-id');
         this._tabChangeCallback.call(null, id);
       }
+    }).bind(this));
+
+    this._$menuIcon.on('click', (() => {
+      this._$overlay.toggleClass('hide');
+    }).bind(this));
+
+    this._$closeIcon.on('click', (() => {
+      this._$overlay.addClass('hide');
     }).bind(this));
   }
 

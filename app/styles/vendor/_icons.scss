@@ -21,18 +21,26 @@
 }
 
 
-.icon-fullscreen:before {
+.icon-close:before {
 	content: "\E001";
 }
 
-.icon-link:before {
+.icon-fullscreen:before {
 	content: "\E002";
 }
 
-.icon-mediumvolume:before {
+.icon-link:before {
 	content: "\E003";
 }
 
-.icon-mute:before {
+.icon-mediumvolume:before {
 	content: "\E004";
+}
+
+.icon-menu:before {
+	content: "\E005";
+}
+
+.icon-mute:before {
+	content: "\E006";
 }

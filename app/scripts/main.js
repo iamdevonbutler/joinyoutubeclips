@@ -21,31 +21,32 @@ const Playbar = require('./playbar');
 const Soundbar = require('./soundbar');
 const Timer = require('./timer');
 const PlayPauseIcon = require('./playPauseIcon');
-
 const utils = require('./utils');
+
+
+
+/**
+* Get data from URL.
+*/
+
+// const data = utils.getPlayerData(window.location.search);
+// const {startTime, endTime} = utils.getInitialTimeRange(data);
+
 
 // ?W77h1Gf8wZg=0-10,10-20
 // @todo might be a good idea to add the video title to this object.
-var _data = [
+var data = [
   {vid: 'AX7hyidzkNs', segments: [[0, 10800]]},
   {vid: 'W77h1Gf8wZg', segments: [[0, 10800]]},
   {vid: 'glWKKOro8QU', segments: [[0, 5], [100, 105]]},
 ];
-
+const startTime = data[0].segments[0][0];
+const endTime = data[0].segments[0][1];
 
 (($) => {
 
   $(document).ready(function() {
-    var data, startTime, endTime;
-
-    /**
-    * Get data from URL.
-    */
-    data = utils.getPlayerData(window.location.search);
-    data = data || _data;
-
-    startTime = data[0].segments[0][0];
-    endTime = data[0].segments[0][1];
+    var startTime, endTime;
 
     /**
      * Instantiate objects.
