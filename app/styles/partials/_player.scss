@@ -3,10 +3,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 1000px;
-  @media only screen and (min-width: 768px) {
-    margin-top: 60px;
-  }
   > li {
     display: none;
     width: 100%;

@@ -44,21 +44,21 @@ class Soundbar {
 
   _bindEvents() {
     this._$soundIcon.on('click', ((event) => {
-      var $el, mute;
+      var $el, isMuted;
       $el = $(event.target);
-      mute = !!$el.hasClass('icon-mediumvolume');
-      if(mute) {
-        $el.removeClass('icon-mediumvolume').addClass('icon-mute');
-        this._$soundbar.hide();
-        if (this._muteVolumeCallback) {
-          this._muteVolumeCallback.call(null);
+      isMuted = $el.hasClass('icon-mute');
+      if (isMuted) {
+        $el.removeClass('icon-mute').addClass('icon-mediumvolume');
+        this._$soundbar.css('opacity', '1');
+        if (this._unMuteVolumeCallback) {
+          this._unMuteVolumeCallback.call(null);
         }
       }
       else {
-        $el.removeClass('icon-mute').addClass('icon-mediumvolume');
-        this._$soundbar.show();
-        if (this._unMuteVolumeCallback) {
-          this._unMuteVolumeCallback.call(null);
+        $el.removeClass('icon-mediumvolume').addClass('icon-mute');
+        this._$soundbar.css('opacity', '0');
+        if (this._muteVolumeCallback) {
+          this._muteVolumeCallback.call(null);
         }
       }
     }).bind(this));
@@ -72,7 +72,11 @@ class Soundbar {
       width = (this._soundbarWidth * volumePercentage) + 'px';
       volume = Math.round(volume * volumePercentage);
 
+      this._$soundIcon.removeClass('icon-mute').addClass('icon-mediumvolume');
+      this._$soundbar.css('opacity', '1');
       this._$soundbar.css('width', width);
+
+      this._unMuteVolumeCallback.call(null);
       this._setVolume(volume); // @todo this is async.
 
     }).bind(this));

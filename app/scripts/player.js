@@ -36,6 +36,7 @@ class Player {
         autoplay: 0,
         controls: 0,
         fs: 0,
+        showinfo: 0,
         start: startTime,
         end: endTime,
       }
@@ -189,6 +190,20 @@ class Player {
       Promise.all(promises).then(resolve, reject);
     }).bind(this));
 
+  }
+
+  play() {
+    var player;
+    player = this._getCurrentPlayer();
+    player.playVideo();
+    this._onPlayCallback.call(null, this._activeId, player.getCurrentTime());
+  }
+
+  pause() {
+    var player;
+    player = this._getCurrentPlayer();
+    player.pauseVideo();
+    this._onPauseCallback.call(null, this._activeId, player.getCurrentTime());
   }
 
   onPause(callback) {

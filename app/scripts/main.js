@@ -10,7 +10,6 @@
  * edit / create new page.
  * soundwidget name to volumewidget
  * change homepage to playerPage
- * fullscreen should be fyull white not ccs
  * mobile
  * default page w/o url params.
  * prob make it iframeable w/ overlays for content.
@@ -21,13 +20,14 @@ const Player = require('./player');
 const Playbar = require('./playbar');
 const Soundbar = require('./soundbar');
 const Timer = require('./timer');
+const PlayPauseIcon = require('./playPauseIcon');
 
 const utils = require('./utils');
-const screenfull = require('screenfull');
 
 // ?W77h1Gf8wZg=0-10,10-20
 // @todo might be a good idea to add the video title to this object.
-var data = [
+var _data = [
+  {vid: 'AX7hyidzkNs', segments: [[0, 10800]]},
   {vid: 'W77h1Gf8wZg', segments: [[0, 10800]]},
   {vid: 'glWKKOro8QU', segments: [[0, 5], [100, 105]]},
 ];
@@ -36,15 +36,16 @@ var data = [
 (($) => {
 
   $(document).ready(function() {
-    var startTime, endTime;
-    startTime = data[0].segments[0][0];
-    endTime = data[0].segments[0][1];
+    var data, startTime, endTime;
 
     /**
     * Get data from URL.
     */
     data = utils.getPlayerData(window.location.search);
-    console.log(data);
+    data = data || _data;
+
+    startTime = data[0].segments[0][0];
+    endTime = data[0].segments[0][1];
 
     /**
      * Instantiate objects.
@@ -64,6 +65,8 @@ var data = [
       endTime: endTime,
     });
 
+    var playPauseIcon = new PlayPauseIcon('#playPauseIconWrapper');
+
     /**
      * Register events.
      */
@@ -77,14 +80,20 @@ var data = [
     nav.onTabChange(::player.switchPlayer);
     nav.onVideoInfoRequest(::player.getVideoInfo);
 
+    playPauseIcon.onPlay(::player.play);
+    playPauseIcon.onPause(::player.pause);
+
+
     player.onPlay((id, time) => {
       playbar.start(time);
       timer.start();
+      playPauseIcon.showPauseIcon();
     });
 
     player.onPause((id, time) => {
       playbar.pause();
       timer.pause();
+      playPauseIcon.showPlayIcon();
     });
 
     player.onPlayerChange((id, time) => {
@@ -104,16 +113,6 @@ var data = [
      * Update soundbar once player has init.
      */
     soundbar.syncVolume();
-
-    /**
-     * Fullscreen mode.
-     */
-    $('#fullscreenIcon').on('click', () => {
-      const target = $('#playerShell')[0];
-      if (screenfull.enabled) {
-        screenfull.request(target);
-      }
-    });
 
   });
 

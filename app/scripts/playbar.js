@@ -62,10 +62,6 @@ class Playbar {
       this._initCanvas();
     }).bind(this));
 
-    $document.on('webkitfullscreenchange mozfullscreenchange fullscreenchange', ((event) => {
-      this._initCanvas();
-    }).bind(this));
-
     this._$playbarWrapper.on('click', ((event) => {
       var left, xPos, newTime;
       if (this._playbarChangeCallback) {

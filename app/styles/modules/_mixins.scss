@@ -22,3 +22,8 @@
     clear: both;
   }
 }
+
+@mixin antialiased {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}

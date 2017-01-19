@@ -5,33 +5,53 @@ function getSegmentFromData(data, id) {
   return data[keys[0]].segments[keys[1]];
 }
 
+function filterArrayDupes(array) {
+  var set = new Set();
+  array.forEach((item) => {
+    if (Array.isArray(item)) {
+      set.add(filterArrayDupes(item));
+    }
+    else {
+      set.add(item);
+    }
+  });
+  return [...set];
+}
+
 // @todo hours...
 module.exports.secondsToDisplayTime = function(seconds) {
-  var minutes, remainder;
+  var minutes, hoursAndMinutes, remainder;
   minutes = Math.floor(seconds/60);
   seconds = Math.floor(seconds - minutes*60);
   remainder = minutes % 60;
-  seconds = seconds < 10 ? '0'+seconds: seconds;
-  minutes = minutes > 60 ? Math.floor(minutes/60) + ':' + (remainder < 10 ? '0'+remainder : remainder) : minutes;
-  return `${minutes}:${seconds}`;
+  seconds = seconds < 10 ? '0'+seconds : seconds;
+  hoursAndMinutes = minutes > 60 ? Math.floor(minutes/60) + ':' + (remainder < 10 ? '0'+remainder : remainder) : minutes;
+  return `${hoursAndMinutes}:${seconds}`;
 }
 
 module.exports.getPlayerData = (query) => {
-  var parsed, data;
+  var parsed, keys, data;
+  const segment = [0, null];
   parsed = queryString.parse(query);
-  data = Object.keys(parsed).map((vid) => {
-    var segments;
-    segments = Array.isArray(parsed[vid]) ? [...new Set(parsed[vid].join(',').split(','))] : parsed[vid].split(',');
-    segments = segments.map(time => time.split('-'));
+  keys = Object.keys(parsed);
+  data = keys.map((vid) => {
+    var segments, obj;
+    segments = [];
+    obj = parsed[vid];
+    if (!obj) return null;
+    segments = obj.split(',').map(item => Object.assign([], segment, item.split('-')));
+    segments = filterArrayDupes(segments);
     return {
       vid,
       segments,
     };
-  });
-  return data;
+  }).filter(Boolean);
+  return data.length ? data : null;
 }
 
 module.exports.getSegmentFromData = getSegmentFromData;
+
+module.exports.filterArrayDupes = filterArrayDupes;
 
 module.exports.getClipRange = (data, id) => {
   var segment = getSegmentFromData(data, id);

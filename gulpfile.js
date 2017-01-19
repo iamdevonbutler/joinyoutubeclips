@@ -102,7 +102,7 @@ gulp.task('lint', () => {
 });
 
 gulp.task('html', () => {
-  return gulp.src('app/*.html')
+  return gulp.src(['app/index.html', 'app/iframe.html'])
     .pipe(fileinclude({
       prefix: '@@',
       basepath: '@file'
@@ -158,6 +158,7 @@ gulp.task('serve', () => {
   gulp.watch('app/styles/vendor/_icons.scss', ['styles']);
   gulp.watch('app/favicon.png', ['favicon']);
   gulp.watch('app/html/favicons.html', ['html']);
+  gulp.watch('app/iframe.html', ['html']);
 });
 
 gulp.task('build', ['clean', 'lint'], () => {

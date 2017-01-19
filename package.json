@@ -46,7 +46,6 @@
   },
   "dependencies": {
     "query-string": "^4.2.3",
-    "screenfull": "^3.0.2",
     "youtube-player": "^3.0.4"
   }
 }

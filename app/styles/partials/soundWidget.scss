@@ -1,0 +1,56 @@
+#soundWidget {
+  @include clearfix;
+  position: relative;
+
+  #soundIconWrapper {
+    cursor: pointer;
+    float: left;
+    position: relative;
+    padding: 0 10px;
+    font-size: 40px;
+    z-index: 101;
+    &:hover + #soundbarWrapper {
+      width: 95px;
+      transition: width .18s linear;
+      padding-right: 20px; // inc hover radius
+    }
+  }
+
+  #soundbarWrapper {
+    cursor: pointer;
+    overflow: hidden;
+    float: left;
+    position: relative;
+    padding: 10px 0;
+    top: 1px;
+    width: 0;
+    transition: width .18s linear;
+    &:hover {
+      width: 95px;
+      padding-right: 20px; // inc hover radius
+    }
+  }
+
+  #soundIcon {
+    display: block;
+    height: 32px;
+  }
+
+  #soundbar,
+  #soundbarBg {
+    width: 95px;
+    height: 10px;
+  }
+  #soundbarBg {
+    position: relative;
+    margin-top: -10px;
+    background-color: $playbarColor;
+    z-index: 90;
+  }
+  #soundbar {
+    position: relative;
+    background-color: $red;
+    z-index: 100;
+  }
+
+}

@@ -1,26 +1,22 @@
 #playbarWrapper {
 
-  position: relative;
-  height: 18px;
-  top: 2px;
-
-  #playbarCanvas {
-    background-color: $darkGrey;
-    height: 5px;
-    position: absolute;
-    top: 3px;
-    left: 0;
-    right: 0;
-    width: 100%;
-    transition: all .15s linear;
-    transition-delay: .25s;
-  }
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover #playbarCanvas {
-    background-color: $darkGrey;
     height: 14px;
-    top: -1px;
-    transition: all .15s linear;
+    transition: height .15s linear;
+  }
+
+  #playbarCanvas {
+    cursor: pointer;
+    background-color: $playbarColor;
+    height: 5px;
+    width: 100%;
+    transition: height .15s linear;
+    transition-delay: .25s;
   }
 
   #playbarTimeTooltip {
