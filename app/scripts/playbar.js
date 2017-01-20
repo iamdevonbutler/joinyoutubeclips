@@ -4,14 +4,15 @@ class Playbar {
 
   constructor(params) {
     // Set vars.
-    const {startTime, endTime, canvasId, cursorColor, playbarHeight} = params;
-    this._clipStartTime = startTime;
-    this._clipEndTime = endTime;
+    const {canvasId, cursorColor, playbarHeight} = params;
+    this._clipStartTime;
+    this._clipEndTime;
     this._canvasId = canvasId;
     this._playbarHeight = playbarHeight || 5;
     this._cursorColor = cursorColor || '#f12b24';
     this._animationFrameRequestId;
     this._getTimeCallback;
+    this._getDurationCallback;
     this._playbarChangeCallback;
     this._playbarWidth;
     this._playbarLeftBoundXPos;
@@ -152,11 +153,18 @@ class Playbar {
     this._animateCursor(xPos);
   }
 
-  reset(startTime, endTime) {
+  reset(startTime = 0, endTime) {
     this.pause();
     this._clearPlaybar();
-    this._clipStartTime = startTime !== undefined ? startTime : this._clipStartTime;
-    this._clipEndTime = endTime !== undefined ? endTime : this._clipEndTime;
+    this._clipStartTime = startTime;
+    if (!endTime) {
+      this._getDurationCallback(null).then((duration) => {
+        this._clipEndTime = duration;
+      });
+    }
+    else {
+      this._clipEndTime = endTime;
+    }
   }
 
   pause() {
@@ -170,6 +178,10 @@ class Playbar {
 
   onTimeRequest(callback) {
     this._getTimeCallback = callback;
+  }
+
+  onDurationRequest(callback) {
+    this._getDurationCallback = callback;
   }
 
 }

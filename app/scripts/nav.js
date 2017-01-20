@@ -12,7 +12,6 @@ class Nav {
 
   _cache() {
     this._$overlay = $('#overlay');
-    this._$closeIcon = $('#closeIcon');
     this._$menuIcon = $('#menuIcon');
     this._$navWrapper = $('#navWrapper');
   }
@@ -41,7 +40,7 @@ class Nav {
         let {startTime, endTime} = utils.getClipRange(data, id);
         startTime = utils.secondsToDisplayTime(startTime);
         startTime = startTime === '0:00' ? '0' : startTime;
-        endTime = utils.secondsToDisplayTime(endTime);
+        endTime = endTime ? utils.secondsToDisplayTime(endTime) : 'end';
         li += `<li data-id="${id}" ${active ? 'class="navItem active"' : 'class="navItem"'}>${startTime} - ${endTime}</li>`;
       });
       html += li + '</ul></li>';
@@ -59,9 +58,7 @@ class Nav {
 
   _bindEvents() {
     this._$navWrapper.on('click', '> li > *', () => {
-      setTimeout(() => {
-        this._$overlay.addClass('hide');
-      }, 600);
+      this._$overlay.addClass('hide');
     });
 
     this._$navWrapper.on('click', '.navItem, #navItemTitle', ((event) => {
@@ -74,12 +71,17 @@ class Nav {
     }).bind(this));
 
     this._$menuIcon.on('click', (() => {
+      var isCloseIcon;
+      isCloseIcon = this._$menuIcon.hasClass('icon-close');
+      if (isCloseIcon) {
+        this._$menuIcon.removeClass('icon-close').addClass('icon-menu');
+      }
+      else {
+        this._$menuIcon.removeClass('icon-menu').addClass('icon-close');
+      }
       this._$overlay.toggleClass('hide');
     }).bind(this));
 
-    this._$closeIcon.on('click', (() => {
-      this._$overlay.addClass('hide');
-    }).bind(this));
   }
 
   _getTabById(id) {

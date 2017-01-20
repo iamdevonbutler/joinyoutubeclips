@@ -3,9 +3,12 @@
   min-height: 100%;
 
   #playerShell {
-    // height: 1.5625vw; // this is important.
     min-height: 1.5625vw; // this is important.
-    position: relative;;
+    position: relative;
+  }
+
+  #player {
+    width: 100%;
   }
 
   #playerFooter {

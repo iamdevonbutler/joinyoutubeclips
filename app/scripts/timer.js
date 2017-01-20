@@ -35,7 +35,7 @@ class Timer {
       this._updateDuration();
     }
     else {
-      this._fetchDuration(this._updateDuration);
+      this._requestDuration(this._updateDuration);
     }
 
     if (this._getTimeCallback) {
@@ -61,7 +61,7 @@ class Timer {
     this._$duration.html(duration);
   }
 
-  _fetchDuration(callback) {
+  _requestDuration(callback) {
     if (!this._onDurationCallback) {
       throw new Error('Callback not specified. Add callback using .onDurationRequest()');
     }

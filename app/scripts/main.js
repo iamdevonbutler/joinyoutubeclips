@@ -22,7 +22,7 @@ const Soundbar = require('./soundbar');
 const Timer = require('./timer');
 const PlayPauseIcon = require('./playPauseIcon');
 const utils = require('./utils');
-
+const screenfull = require('screenfull');
 
 
 /**
@@ -37,7 +37,7 @@ const utils = require('./utils');
 // @todo might be a good idea to add the video title to this object.
 var data = [
   {vid: 'AX7hyidzkNs', segments: [ [0] ]},
-  {vid: 'W77h1Gf8wZg', segments: [[0, 10800]]},
+  {vid: 'W77h1Gf8wZg', segments: [[0, 1000]]},
   {vid: 'glWKKOro8QU', segments: [[0, 5], [100, 105]]},
 ];
 const startTime = data[0].segments[0][0];
@@ -54,13 +54,7 @@ const endTime = data[0].segments[0][1];
     var nav = new Nav(data);
     var soundbar = new Soundbar();
     var timer = new Timer();
-
-    var playbar = new Playbar({
-      canvasId: 'playbarCanvas',
-      startTime: startTime,
-      endTime: endTime,
-    });
-
+    var playbar = new Playbar({canvasId: 'playbarCanvas'});
     var playPauseIcon = new PlayPauseIcon('#playPauseIconWrapper');
 
     /**
@@ -68,6 +62,7 @@ const endTime = data[0].segments[0][1];
      */
     playbar.onPlaybarChange(::player.seekTo);
     playbar.onTimeRequest(::player.getCurrentTime);
+    playbar.onDurationRequest(::player.getDuration);
     soundbar.onVolumeRequest(::player.getVolume);
     soundbar.onSetVolumeRequest(::player.setVolume);
     soundbar.onMuteRequest(::player.mute);
@@ -80,6 +75,7 @@ const endTime = data[0].segments[0][1];
     playPauseIcon.onPause(::player.pause);
 
     player.onPlay((id, time) => {
+      console.log(1);
       playbar.start(time);
       timer.start();
       playPauseIcon.showPauseIcon();
@@ -103,12 +99,22 @@ const endTime = data[0].segments[0][1];
      */
     player.init(data);
     nav.init(data);
-    timer.reset(startTime, endTime, );
+    timer.reset(startTime, endTime);
+    playbar.reset(startTime, endTime);
 
     /**
      * Update soundbar once player has init.
      */
     soundbar.syncVolume();
+
+    /**
+     * Fullscreen mode.
+     */
+     $('#fullscreen').on('click', () => {
+        if (screenfull.enabled) {
+          screenfull.request();
+        }
+     });
 
   });
 

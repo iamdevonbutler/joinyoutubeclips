@@ -1,10 +1,11 @@
 #timeWidget {
   @include antialiased;
   font-size: 14px;
-  > *:first-child::after {
-    content: '/';
-    padding-left: 10px;
-    padding-right: 5px;
+  > *:first-child:empty + .divider {
+    display: none;
+  }
+  span.divider {
+    padding: 0 5px;
   }
   > * {
     top: 0;

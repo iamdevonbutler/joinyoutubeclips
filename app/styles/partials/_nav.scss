@@ -5,22 +5,11 @@
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 100vh;
-  background-color: rgba(0,0,0,0.92);
+  height: calc(100vw/(16/9));
+  margin: 0;
+  padding: 0;
+  background-color: rgba(0,0,0,0.82);
   &.hide {
-    display: none;
-  }
-  #closeIcon {
-    color: $iconColor;
-    font-size: 38px;
-    display: block;
-    position: absolute;
-    top: 35px;
-    left: 35px;
-    cursor: pointer;
-    padding: 10px;
-  }
-  .hide {
     display: none;
   }
 }
@@ -29,10 +18,17 @@
   display: block;
   max-width: 1000px;
   margin: 0 auto;
-  padding-top: 100px;
+  height: calc(100% - 50px);
+  overflow: scroll;
   > li {
-    margin-bottom: 30px;
+    &:first-child {
+      padding-top: 30px;
+    }
     text-align: center;
+    margin-bottom: 10px;
+    @media (min-width: 800px) {
+      margin-bottom: 20px;
+    }
     &.active #navItemTitle,
     &.active #linkIcon {
       color: $iconColor;
@@ -46,8 +42,14 @@
     }
     #navItemTitle {
       color: $grey;
-      font-size: 18px;
+      font-size: 15px;
       cursor: pointer;
+      @media (min-width: 800px) {
+        font-size: 18px;
+      }
+      &:hover {
+        color: $iconColor;
+      }
     }
     #linkIcon {
       font-size: 24px;
@@ -57,25 +59,34 @@
       top: 10px;
       color: $grey;
       cursor: pointer;
+      &:hover {
+        color: $iconColor;
+      }
     }
-    #navItemTitle,
     #navItemClipsWrapper {
-      display: inline-block;
+      margin-top: 10px;
+      margin-bottom: 25px;
+      @media (min-width: 800px) {
+        margin-bottom: 35px;
+      }
     }
     #navItemClipsWrapper > li {
       cursor: pointer;
-      margin-left: 10px;
       display: inline-block;
       font-size: 16px;
-      background-color: $darkGrey;
       padding: 6px 10px;
       color: $grey;
-      &.active {
-        color: $iconColor;
-      }
+      border: 2px solid $grey;
+      border-radius: 4px;
+      margin-left: 10px;
       &:first-child {
         margin-left: 0;
       }
+      &.active, &:hover {
+        color: $iconColor;
+        border: 2px solid $iconColor;
+      }
+
     }
 
   }

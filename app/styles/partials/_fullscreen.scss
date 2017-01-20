@@ -1,0 +1,21 @@
+*:fullscreen {
+
+  #overlay {
+    height: 100vh;
+  }
+
+  #playerPage {
+    overflow: hidden;
+  }
+
+  #playerShell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  #playerFooter {
+    bottom: 10px;
+  }
+}
