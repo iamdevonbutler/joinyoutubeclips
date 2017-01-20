@@ -58,6 +58,12 @@ class Nav {
   }
 
   _bindEvents() {
+    this._$navWrapper.on('click', '> li > *', () => {
+      setTimeout(() => {
+        this._$overlay.addClass('hide');
+      }, 600);
+    });
+
     this._$navWrapper.on('click', '.navItem, #navItemTitle', ((event) => {
       var $el;
       $el = $(event.target);

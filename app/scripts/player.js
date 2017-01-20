@@ -192,6 +192,12 @@ class Player {
 
   }
 
+  getDuration() {
+    var player;
+    player = this._getCurrentPlayer();
+    return player.getDuration();
+  }  
+
   play() {
     var player;
     player = this._getCurrentPlayer();

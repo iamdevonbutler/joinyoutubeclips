@@ -36,7 +36,7 @@ const utils = require('./utils');
 // ?W77h1Gf8wZg=0-10,10-20
 // @todo might be a good idea to add the video title to this object.
 var data = [
-  {vid: 'AX7hyidzkNs', segments: [[0, 10800]]},
+  {vid: 'AX7hyidzkNs', segments: [ [0] ]},
   {vid: 'W77h1Gf8wZg', segments: [[0, 10800]]},
   {vid: 'glWKKOro8QU', segments: [[0, 5], [100, 105]]},
 ];
@@ -46,7 +46,6 @@ const endTime = data[0].segments[0][1];
 (($) => {
 
   $(document).ready(function() {
-    var startTime, endTime;
 
     /**
      * Instantiate objects.
@@ -54,14 +53,10 @@ const endTime = data[0].segments[0][1];
     var player = new Player(data);
     var nav = new Nav(data);
     var soundbar = new Soundbar();
+    var timer = new Timer();
 
     var playbar = new Playbar({
       canvasId: 'playbarCanvas',
-      startTime: startTime,
-      endTime: endTime,
-    });
-
-    var timer = new Timer({
       startTime: startTime,
       endTime: endTime,
     });
@@ -78,12 +73,11 @@ const endTime = data[0].segments[0][1];
     soundbar.onMuteRequest(::player.mute);
     soundbar.onUnMuteRequest(::player.unMute);
     timer.onTimeRequest(::player.getCurrentTime);
+    timer.onDurationRequest(::player.getDuration);
     nav.onTabChange(::player.switchPlayer);
     nav.onVideoInfoRequest(::player.getVideoInfo);
-
     playPauseIcon.onPlay(::player.play);
     playPauseIcon.onPause(::player.pause);
-
 
     player.onPlay((id, time) => {
       playbar.start(time);
@@ -109,6 +103,7 @@ const endTime = data[0].segments[0][1];
      */
     player.init(data);
     nav.init(data);
+    timer.reset(startTime, endTime, );
 
     /**
      * Update soundbar once player has init.

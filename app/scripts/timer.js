@@ -3,18 +3,16 @@ const utils = require('./utils');
 class Timer {
 
   constructor(params) {
-    const {startTime, endTime} = params;
-
-    this._clipStartTime = startTime;
-    this._clipEndTime = endTime;
+    this._clipStartTime;
+    this._clipEndTime;
     this._getTimeCallback;
+    this._onDurationCallback;
     this._timerInterval;
 
     this._$currentTime;
     this._$duration;
 
     this._cache();
-    this.reset(startTime, endTime);
   }
 
   _cache() {
@@ -30,10 +28,15 @@ class Timer {
   }
 
   reset(startTime, endTime) {
-    this._clipStartTime = startTime;
-    this._clipEndTime = endTime;
+    this._clipStartTime = startTime || 0;
+    this._clipEndTime = endTime || '';
 
-    this._updateDuration();
+    if (endTime) {
+      this._updateDuration();
+    }
+    else {
+      this._fetchDuration(this._updateDuration);
+    }
 
     if (this._getTimeCallback) {
       this._updateCurrentTime();
@@ -58,6 +61,16 @@ class Timer {
     this._$duration.html(duration);
   }
 
+  _fetchDuration(callback) {
+    if (!this._onDurationCallback) {
+      throw new Error('Callback not specified. Add callback using .onDurationRequest()');
+    }
+    this._onDurationCallback.call(null).then((duration) => {
+      this._clipEndTime = duration;
+      callback.call(this);
+    });
+  }
+
   start() {
     this._timerInterval = setInterval(this._updateCurrentTime.bind(this), 100);
   }
@@ -68,6 +81,10 @@ class Timer {
 
   onTimeRequest(callback) {
     this._getTimeCallback = callback;
+  }
+
+  onDurationRequest(callback) {
+    this._onDurationCallback = callback;
   }
 
 }
