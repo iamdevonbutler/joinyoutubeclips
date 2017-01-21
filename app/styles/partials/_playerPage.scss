@@ -71,7 +71,7 @@ body {
     > .right {
       float: right;
       position: relative;
-      top: 4px;
+      top: 5px;
       @include clearfix;
       > * {
         float: left;

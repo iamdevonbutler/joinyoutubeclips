@@ -90,7 +90,7 @@ self.getPlayerData = (query) => {
     var segments, obj;
     segments = [];
     obj = parsed[vid];
-    if (!obj || !obj.length) return {vid, segments: [0, null]};
+    if (!obj || !obj.length) return {vid, segments: [[0, null]]};
     segments = obj.split(',').map(item => {
       var segment;
       segment = item.split('-').map(item => self.convertTimeToSec(item));

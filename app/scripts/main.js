@@ -17,7 +17,7 @@ const exposeControls = require('./exposeControls');
 * e.g. ?vid=0-10,10-20
 */
 if (!window.location.search) {
-  window.location.search = '?' + 'felDULf1voY=55-3:30,36:05-39:33&AV1jKBrw0ck=6:45';
+  window.location.search = '?' + 'felDULf1voY=55-3:30,36:05-39:33&AV1jKBrw0ck=6:45-10:20&puSkP3uym5k';
 }
 const data = getPlayerData(window.location.search);
 const startTime = data[0].segments[0][0];
