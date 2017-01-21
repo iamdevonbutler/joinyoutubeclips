@@ -1,19 +1,10 @@
 /**
  * @todos
- *
- * clip selection via url param.
  * data from URL for text to display inbtw videos (single param to include generic inbtw text).
- * unbinding (not needed for this use case but necessary for webapps and such).
  * error handling for player requests, e.g. getPlayerData & getVideoUrl.
  * cross browser testing.
- * docs page is github page.
- * edit / create new page.
  * soundwidget name to volumewidget
- * change homepage to playerPage
  * mobile
- * default page w/o url params.
- * prob make it iframeable w/ overlays for content.
- * probably do some kinda nav thing overlay and replace the ugly boxes.
  */
 const Nav = require('./nav');
 const Player = require('./player');
@@ -25,7 +16,6 @@ const {getClipRange, getPlayerData} = require('./utils');
 const screenfull = require('screenfull');
 const exposeControls = require('./exposeControls');
 
-
 /**
 * Get data from URL.
 * e.g. ?vid=0-10,10-20
@@ -34,7 +24,6 @@ if (!window.location.search) {
   window.location.search = '?' + 'felDULf1voY=55-3:30,36:05&AV1jKBrw0ck=6:45';
 }
 const data = getPlayerData(window.location.search);
-
 const startTime = data[0].segments[0][0];
 const endTime = data[0].segments[0][1];
 
