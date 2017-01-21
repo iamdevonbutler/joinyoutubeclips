@@ -1,7 +1,7 @@
 # joinYouTubeClips
 
 Demo:
-[http://iamdevonbutler.github.io/joinyoutubeclips](http://iamdevonbutler.github.io/joinyoutubeclips?felDULf1voY=55-3:30,36:05&AV1jKBrw0ck=6:45)
+[http://iamdevonbutler.github.io/joinyoutubeclips](https://iamdevonbutler.github.io/joinyoutubeclips)
 
 ## Syntax
 
