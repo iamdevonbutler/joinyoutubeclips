@@ -24,13 +24,13 @@ var skinny = gutil.env.skinny; // compress stuff...
 gulp.task('favicon', function () {
   return gulp.src('app/favicon.png').pipe(favicons({
     appName: 'joinYouTubeClips',
-    appDescription: 'www.joinyoutubeclips.com',
+    appDescription: 'https://github.com/iamdevonbutler/joinyoutubeclips',
     developerName: 'Jay Pescione <jpescione@gmail.com>',
     developerURL: 'https://github.com/iamdevonbutler',
     background: 'transparent',
     path: '/favicons/',
     html: '../../app/html/favicons.html',
-    url: 'http://wwww.joinyoutubeclips.com/favicon.png',
+    url: 'https://iamdevonbutler.github.io/joinyoutubeclips/favicon.png',
     display: 'standalone',
     orientation: 'portrait',
     version: 2,
@@ -163,17 +163,15 @@ gulp.task('serve', () => {
 
 gulp.task('build', ['clean', 'lint'], () => {
   const preBuildTasks = ['images', 'styles', 'scripts', 'fonts', 'extras', 'favicon', 'iconfont'];
-  runSequence(preBuildTasks, 'html', () => {
+  return runSequence(preBuildTasks, 'html', () => {
     return gulp.src('dist/**/*')
       .pipe($.size({title: 'build', gzip: true}));
   });
 });
 
-gulp.task('deploy', ['clean', 'build'], () => {
+gulp.task('deploy', () => {
   return gulp.src('dist')
-    .pipe($.subtree({
-      branch: 'gh-pages'
-    }));
+    .pipe($.subtree());
 });
 
 gulp.task('default', fullBoot ? ['clean', 'lint'] : ['lint'], () => {
