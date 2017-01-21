@@ -9,8 +9,9 @@
   margin: 0;
   padding: 0;
   background-color: rgba(0,0,0,0.82);
-  &.hide {
-    display: none;
+  display: none;
+  &.show {
+    display: block;
   }
 }
 
@@ -23,6 +24,9 @@
   > li {
     &:first-child {
       padding-top: 30px;
+      @media (min-width: 800px) {
+        padding-top: 60px;
+      }
     }
     text-align: center;
     margin-bottom: 10px;

@@ -2,6 +2,34 @@ const queryString = require('query-string');
 
 const self = module.exports;
 
+self.throttle = function(callback, delay, callFirst = true) {
+  var waiting, calledFirst;
+  return function(...args) {
+    if (!waiting) {
+      waiting = true;
+      if (!calledFirst && callFirst) {
+        waiting = false;
+        calledFirst = true;
+        return callback.apply(null, args);
+      }
+      setTimeout(() => {
+        waiting = false;
+        return callback.apply(null, args);
+      }, delay);
+    }
+  }
+}
+
+self.debounce = function(callback, timeout) {
+  var clear;
+  return function(...args) {
+    clearTimeout(clear);
+    clear = setTimeout(() => {
+      return callback.apply(null, args);
+    }, timeout);
+  }
+}
+
 self.getSegmentFromData = function(data, id) {
   var keys = id.split('.');
   return data[keys[0]].segments[keys[1]];

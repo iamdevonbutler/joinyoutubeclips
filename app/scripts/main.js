@@ -21,8 +21,9 @@ const Playbar = require('./playbar');
 const Soundbar = require('./soundbar');
 const Timer = require('./timer');
 const PlayPauseIcon = require('./playPauseIcon');
-const utils = require('./utils');
+const {getClipRange} = require('./utils');
 const screenfull = require('screenfull');
+const exposeControls = require('./exposeControls');
 
 
 /**
@@ -48,7 +49,7 @@ const endTime = data[0].segments[0][1];
   $(document).ready(function() {
 
     /**
-     * Instantiate objects.
+     * Instantiate components.
      */
     var player = new Player(data);
     var nav = new Nav(data);
@@ -75,7 +76,6 @@ const endTime = data[0].segments[0][1];
     playPauseIcon.onPause(::player.pause);
 
     player.onPlay((id, time) => {
-      console.log(1);
       playbar.start(time);
       timer.start();
       playPauseIcon.showPauseIcon();
@@ -88,33 +88,36 @@ const endTime = data[0].segments[0][1];
     });
 
     player.onPlayerChange((id, time) => {
-      const {startTime, endTime} = utils.getClipRange(data, id);
+      const {startTime, endTime} = getClipRange(data, id);
       playbar.reset(startTime, endTime);
       timer.reset(startTime, endTime);
       nav.switchNav(id);
     });
 
     /**
-     * Init objects.
+     * Init components.
      */
     player.init(data);
     nav.init(data);
     timer.reset(startTime, endTime);
     playbar.reset(startTime, endTime);
-
-    /**
-     * Update soundbar once player has init.
-     */
-    soundbar.syncVolume();
+    soundbar.syncVolume(); // Update soundbar once player has init.
 
     /**
      * Fullscreen mode.
      */
-     $('#fullscreen').on('click', () => {
-        if (screenfull.enabled) {
-          screenfull.request();
-        }
-     });
+    $('#fullscreen').on('click', () => {
+      if (screenfull.enabled) {
+        screenfull.request();
+      }
+    });
+
+    /**
+     * Hide/show controls.
+     */
+    exposeControls(player);
+
+
 
   });
 

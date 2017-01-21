@@ -196,7 +196,7 @@ class Player {
     var player;
     player = this._getCurrentPlayer();
     return player.getDuration();
-  }  
+  }
 
   play() {
     var player;
@@ -212,6 +212,12 @@ class Player {
     this._onPauseCallback.call(null, this._activeId, player.getCurrentTime());
   }
 
+  getPlayerState() {
+    var player;
+    player = this._getCurrentPlayer();
+    return player.getPlayerState();
+  }
+
   onPause(callback) {
     this._onPauseCallback = callback;
   }
@@ -223,7 +229,9 @@ class Player {
   init(data) {
     this._cache();
     this._addPlayers(data);
-    this._bufferPlayers(this._players);
+    setTimeout(() => {
+      this._bufferPlayers(this._players);
+    }, 3000);
   }
 
 }

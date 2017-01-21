@@ -11,6 +11,7 @@ class Nav {
   }
 
   _cache() {
+    this._$body = $('body');
     this._$overlay = $('#overlay');
     this._$menuIcon = $('#menuIcon');
     this._$navWrapper = $('#navWrapper');
@@ -57,10 +58,6 @@ class Nav {
   }
 
   _bindEvents() {
-    this._$navWrapper.on('click', '> li > *', () => {
-      this._$overlay.addClass('hide');
-    });
-
     this._$navWrapper.on('click', '.navItem, #navItemTitle', ((event) => {
       var $el;
       $el = $(event.target);
@@ -71,15 +68,17 @@ class Nav {
     }).bind(this));
 
     this._$menuIcon.on('click', (() => {
-      var isCloseIcon;
-      isCloseIcon = this._$menuIcon.hasClass('icon-close');
-      if (isCloseIcon) {
+      var overlayExposed;
+      overlayExposed = this._$menuIcon.hasClass('icon-close');
+      this._$overlay.toggleClass('show');
+      if (overlayExposed) {
         this._$menuIcon.removeClass('icon-close').addClass('icon-menu');
+        this._$body.removeClass('nav-exposed-2');
       }
       else {
+        this._$body.addClass('nav-exposed-2');
         this._$menuIcon.removeClass('icon-menu').addClass('icon-close');
       }
-      this._$overlay.toggleClass('hide');
     }).bind(this));
 
   }

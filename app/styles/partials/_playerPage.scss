@@ -1,6 +1,27 @@
-#playerPage {
+body {
+  #playerPage #playerFooter > * {
+    transform: translate3d(0, 70px, 0);
+    transition: transform .18s linear;
+  }
+  &[class^="nav-exposed"] #playerPage #playerFooter > * {
+    transform: translate3d(0, 0, 0);
+    transition: transform .18s linear;
+  }
+}
 
+#playerPage {
   min-height: 100%;
+
+  #playerMask {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    height: calc(100vw/(16/9));
+    cursor: pointer;
+  }
 
   #playerShell {
     min-height: 1.5625vw; // this is important.
@@ -20,6 +41,7 @@
     margin: 0 auto;
     z-index: 1000;
     @include clearfix;
+    overflow: hidden;
   }
 
   // Playbar
@@ -58,7 +80,7 @@
         cursor: pointer;
       }
       > #menuIcon {
-        font-size: 35px;
+        font-size: 34px;
         position: relative;
         top: -1px;
       }
