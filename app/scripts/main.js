@@ -21,26 +21,20 @@ const Playbar = require('./playbar');
 const Soundbar = require('./soundbar');
 const Timer = require('./timer');
 const PlayPauseIcon = require('./playPauseIcon');
-const {getClipRange} = require('./utils');
+const {getClipRange, getPlayerData} = require('./utils');
 const screenfull = require('screenfull');
 const exposeControls = require('./exposeControls');
 
 
 /**
 * Get data from URL.
+* e.g. ?vid=0-10,10-20
 */
+if (!window.location.search) {
+  window.location.search = '?' + 'felDULf1voY=55-3:30,36:05&AV1jKBrw0ck=6:45';
+}
+const data = getPlayerData(window.location.search);
 
-// const data = utils.getPlayerData(window.location.search);
-// const {startTime, endTime} = utils.getInitialTimeRange(data);
-
-
-// ?W77h1Gf8wZg=0-10,10-20
-// @todo might be a good idea to add the video title to this object.
-var data = [
-  {vid: 'AX7hyidzkNs', segments: [ [0] ]},
-  {vid: 'W77h1Gf8wZg', segments: [[0, 1000]]},
-  {vid: 'glWKKOro8QU', segments: [[0, 5], [100, 105]]},
-];
 const startTime = data[0].segments[0][0];
 const endTime = data[0].segments[0][1];
 

@@ -1,6 +1,6 @@
 #playPauseIconWrapper {
   padding: 7px;
-  top: -2px;
+  top: -1px;
   cursor: pointer;
   position: relative;
   #playPauseIcon {
@@ -11,7 +11,7 @@
   &.pause {
     #playPauseIcon {
       width: 9px;
-      height: 22px;
+      height: 21px;
       border-right: 5px solid $iconColor;
       border-left: 5px solid $iconColor;
       border-top: 0;

@@ -90,7 +90,7 @@ class Playbar {
         this._$timeTooltipWrapper.html(time);
         this._$timeTooltipWrapper.css({
           display: 'block',
-          top: '-10px',
+          top: '-1px',
           left: `${xPos-3}px`, // 3px offset centers div w/ mouse pos.
         });
     }).bind(this));

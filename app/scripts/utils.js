@@ -35,7 +35,7 @@ self.getSegmentFromData = function(data, id) {
   return data[keys[0]].segments[keys[1]];
 };
 
-self.filterArrayDupes = function filterArrayDupes(array) {
+self.filterArrayDupes = function(array) {
   var set = new Set();
   array.forEach((item) => {
     if (Array.isArray(item)) {
@@ -72,18 +72,31 @@ self.secondsToDisplayTime = function(seconds) {
   return `${hoursAndMinutes}:${seconds}`;
 }
 
+self.convertTimeToSec = function(time) {
+  return time.split(':')
+    .map(item => parseInt(item, 10))
+    .reduceRight((prev, current, i) => {
+      return prev + current * Math.pow(60, i+1);
+  });
+};
+
+// Syntax domain?vid1=0-10,100-110&vid2=0-100
 self.getPlayerData = (query) => {
-  var parsed, keys, data;
-  const segment = [0, null];
+  var parsed, ids, data;
+  const defaultSegment = [0, null];
   parsed = queryString.parse(query);
-  keys = Object.keys(parsed);
-  data = keys.map((vid) => {
+  ids = Object.keys(parsed);
+  console.log(ids);
+  data = ids.map((vid) => {
     var segments, obj;
     segments = [];
     obj = parsed[vid];
-    if (!obj) return null;
-    segments = obj.split(',').map(item => Object.assign([], segment, item.split('-')));
-    segments = filterArrayDupes(segments);
+    if (!obj || !obj.length) return {vid, segments: [0, null]};
+    segments = obj.split(',').map(item => {
+      var segment;
+      segment = item.split('-').map(item => self.convertTimeToSec(item));
+      return Object.assign([], defaultSegment, segment);
+    });
     return {
       vid,
       segments,
