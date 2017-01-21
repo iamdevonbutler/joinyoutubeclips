@@ -161,15 +161,12 @@ gulp.task('serve', () => {
   gulp.watch('app/iframe.html', ['html']);
 });
 
-gulp.task('build', ['clean', 'lint'], () => {
+gulp.task('build', ['clean', 'lint'], (cb) => {
   const preBuildTasks = ['images', 'styles', 'scripts', 'fonts', 'extras', 'favicon', 'iconfont'];
-  return runSequence(preBuildTasks, 'html', () => {
-    return gulp.src('dist/**/*')
-      .pipe($.size({title: 'build', gzip: true}));
-  });
+  return runSequence(preBuildTasks, 'html', cb);
 });
 
-gulp.task('deploy', () => {
+gulp.task('deploy', ['build'], () => {
   return gulp.src('dist')
     .pipe($.subtree());
 });
