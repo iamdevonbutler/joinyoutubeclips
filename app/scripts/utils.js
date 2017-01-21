@@ -86,7 +86,6 @@ self.getPlayerData = (query) => {
   const defaultSegment = [0, null];
   parsed = queryString.parse(query);
   ids = Object.keys(parsed);
-  console.log(ids);
   data = ids.map((vid) => {
     var segments, obj;
     segments = [];

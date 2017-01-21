@@ -2,10 +2,7 @@
   "name": "joinyoutubeclips",
   "version": "0.1.0",
   "description": "Join YouTube Clips",
-  "repository": "iamdevonbutler/joinyoutubeclips",
-  "engines": {
-    "node": ">=4"
-  },
+  "repository": "git@github.com:iamdevonbutler/joinyoutubeclips.git",
   "devDependencies": {
     "babel-core": "^6.4.0",
     "babel-eslint": "^7.0.0",
@@ -45,7 +42,8 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "query-string": "^4.2.3",
-    "youtube-player": "^3.0.4"
+    "query-string": "4.2.3",
+    "screenfull": "3.0.2",
+    "youtube-player": "3.0.4"
   }
 }

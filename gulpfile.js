@@ -169,10 +169,11 @@ gulp.task('build', ['clean', 'lint'], () => {
   });
 });
 
-gulp.task('deploy', ['build'], () => {
+gulp.task('deploy', ['clean', 'build'], () => {
   return gulp.src('dist')
-    .pipe($.subtree())
-    .pipe($.clean());
+    .pipe($.subtree({
+      branch: 'gh-pages'
+    }));
 });
 
 gulp.task('default', fullBoot ? ['clean', 'lint'] : ['lint'], () => {
