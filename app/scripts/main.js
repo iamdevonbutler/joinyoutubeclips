@@ -71,7 +71,7 @@ const endTime = data[0].segments[0][1];
       playbar.reset(startTime, endTime);
       timer.reset(startTime, endTime);
       nav.switchNav(id);
-    });
+    }
 
     /**
      * Init components.

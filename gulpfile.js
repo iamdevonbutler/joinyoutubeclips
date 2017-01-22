@@ -91,14 +91,11 @@ gulp.task('scripts', () => {
     .pipe(gulp.dest('dist/scripts'));
 });
 
-function lint(files, options) {
-  return gulp.src(files)
-    .pipe($.eslint(options))
-    .pipe($.if(!browserSync.active, $.eslint.failAfterError()));
-}
-
 gulp.task('lint', () => {
-  return lint('app/scripts/**/*.js');
+  return gulp.src('app/scripts/**/*.js')
+    .pipe($.eslint({}))
+    .pipe($.eslint.format())
+    .pipe($.eslint.failAfterError());
 });
 
 gulp.task('html', () => {
