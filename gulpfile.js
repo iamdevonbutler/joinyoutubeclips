@@ -19,7 +19,7 @@ const fileinclude = require('gulp-file-include');
 const favicons = require('gulp-favicons');
 
 const fullBoot = gutil.env.full;
-var skinny = gutil.env.skinny; // compress stuff...
+var compress = gutil.env.compress;
 
 gulp.task('favicon', function () {
   return gulp.src('app/favicon.png').pipe(favicons({
@@ -71,7 +71,7 @@ gulp.task('styles', () => {
       includePaths: ['.']
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer({browsers: ['> 1%', 'last 2 versions', 'Firefox ESR']}))
-    .pipe($.if(skinny, $.cssnano()))
+    .pipe($.if(compress, $.cssnano()))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('dist/styles'));
 });
@@ -86,8 +86,8 @@ gulp.task('scripts', () => {
       this.emit('end');
     })
     .pipe(source('main.js'))
-    .pipe($.if(skinny, buffer()))
-    .pipe($.if(skinny, $.uglify()))
+    .pipe($.if(compress, buffer()))
+    .pipe($.if(compress, $.uglify()))
     .pipe(gulp.dest('dist/scripts'));
 });
 
@@ -104,13 +104,13 @@ gulp.task('html', () => {
       prefix: '@@',
       basepath: '@file'
     }))
-    .pipe($.if(skinny, $.htmlmin({collapseWhitespace: true})))
+    .pipe($.if(compress, $.htmlmin({collapseWhitespace: true})))
     .pipe(gulp.dest('dist'));
 });
 
 gulp.task('images', () => {
   return gulp.src('app/images/**/*')
-    .pipe($.if(skinny, $.cache($.imagemin())))
+    .pipe($.if(compress, $.cache($.imagemin())))
     .pipe(gulp.dest('dist/images'));
 });
 
