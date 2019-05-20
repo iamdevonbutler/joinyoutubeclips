@@ -96,7 +96,13 @@ const endTime = data[0].segments[0][1];
      */
     exposeControls(player);
 
-
+    /**
+     * Autoplay.
+     */
+     var hash = window.location.hash.substr(1);
+     if (hash === 'play') {
+       player.play();
+     }
 
   });
 

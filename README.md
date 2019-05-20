@@ -17,6 +17,9 @@ Demo:
 
 ?felDULf1voY=`0-10`,`100-200`
 
+**Autoplay on start:**
+
+#play
 
 **Segment time**
 
